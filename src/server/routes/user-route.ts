@@ -15,20 +15,25 @@ const userRouteApp = new Hono()
         email: z.email().optional(),
       }),
     ),
-    (c) => {
+    async (c) => {
       const { username, email } = c.req.valid("query");
+      let usersResult: (typeof users.$inferSelect)[] | null = null;
       if (email) {
-        const user = db.select().from(users).where(eq(users.email, email));
-        return c.json({ user });
+        usersResult = await db
+          .select()
+          .from(users)
+          .where(eq(users.email, email));
       }
       if (username) {
-        const user = db
+        usersResult = await db
           .select()
           .from(users)
           .where(eq(users.username, username));
-        return c.json({ user });
       }
-      return c.json({ message: "Bad request!" }, 400);
+      if (!usersResult || usersResult.length === 0) {
+        return c.json({ message: "Not found" }, 404);
+      }
+      return c.json({ user: usersResult[0] });
     },
   )
   .post(
