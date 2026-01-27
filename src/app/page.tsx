@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { client } from "./api/v1/[[...route]]/route";
 import LoginCard from "./components/login-card";
+import Modal from "./components/modal";
 
 export default function Home() {
   const { data } = useQuery({
@@ -12,5 +13,9 @@ export default function Home() {
       return await data.json();
     },
   });
-  return <LoginCard />;
+  return (
+    <Modal>
+      <LoginCard />
+    </Modal>
+  );
 }

@@ -1,19 +1,6 @@
 import type { WidgetProps } from "@rjsf/utils";
-import { Input } from "@/components/ui/input";
+import TextWidget from "./text-widget";
 
-export default function PasswordWidget({
-  className,
-  value,
-  onChange,
-  placeholder,
-}: WidgetProps) {
-  return (
-    <Input
-      value={value}
-      className={className}
-      onChange={onChange}
-      placeholder={placeholder}
-      type="password"
-    />
-  );
+export default function PasswordWidget(props: WidgetProps) {
+  return <TextWidget type="password" {...props} />;
 }
