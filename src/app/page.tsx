@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { client } from "./api/v1/[[...route]]/route";
+import LoginCard from "./components/login-card";
 
 export default function Home() {
   const { data } = useQuery({
@@ -11,5 +12,5 @@ export default function Home() {
       return await data.json();
     },
   });
-  return <h1>Hello World {data}</h1>;
+  return <LoginCard />;
 }

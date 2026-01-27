@@ -1,0 +1,14 @@
+{
+  "email": {
+    "ui:title": "",
+    "ui:label": "",
+    "ui:widget": "email",
+    "ui:placeholder": "Email or username"
+  },
+  "password": {
+    "ui:title": "",
+    "ui:label": "",
+    "ui:widget": "password",
+    "ui:placeholder": "Password"
+  }
+}
