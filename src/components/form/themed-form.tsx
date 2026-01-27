@@ -5,11 +5,13 @@ import FieldErrorTemplate from "./templates/FieldErrorTemplate";
 import TitleFieldTemplate from "./templates/TitleFieldTemplate";
 import EmailWidget from "./widgets/email-widget";
 import PasswordWidget from "./widgets/password-widget";
+import TextWidget from "./widgets/text-widget";
 
 const theme: ThemeProps = {
   widgets: {
     EmailWidget,
     PasswordWidget,
+    TextWidget,
   },
   templates: {
     TitleFieldTemplate,

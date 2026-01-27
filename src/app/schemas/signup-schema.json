@@ -1,0 +1,16 @@
+{
+  "title": "Sign up",
+  "description": "By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.",
+  "properties": {
+    "username": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    }
+  },
+  "required": ["email", "password", "username"]
+}

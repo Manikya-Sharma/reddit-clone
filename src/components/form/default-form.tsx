@@ -10,6 +10,7 @@ type DefaultFormProps<T> = {
   formData: T;
   onChange: (data: T) => void;
   onSubmit: (data: IChangeEvent, event: FormEvent) => void;
+  disabled?: boolean;
 };
 
 export function DefaultForm<T>({
@@ -18,6 +19,7 @@ export function DefaultForm<T>({
   formData,
   onChange,
   onSubmit,
+  disabled,
 }: DefaultFormProps<T>) {
   return (
     <ThemedForm
@@ -29,6 +31,7 @@ export function DefaultForm<T>({
       uiSchema={uiSchema}
       validator={validator}
       onSubmit={onSubmit}
+      disabled={disabled}
     />
   );
 }

@@ -7,7 +7,7 @@ import { users } from "@/database/drizzle/schema";
 
 const userRouteApp = new Hono()
   .get(
-    "/user",
+    "/",
     zValidator(
       "query",
       z.object({
@@ -32,7 +32,7 @@ const userRouteApp = new Hono()
     },
   )
   .post(
-    "/user",
+    "/",
     zValidator(
       "json",
       z.object({
@@ -44,8 +44,13 @@ const userRouteApp = new Hono()
     async (c) => {
       const data = c.req.valid("json");
       const user = { ...data };
-      await db.insert(users).values(user);
-      return c.json({ message: "ok" });
+      try {
+        await db.insert(users).values(user);
+        return c.json({ message: "ok" });
+      } catch (e) {
+        console.error(e);
+        return c.json({ message: "Something went wrong" }, 500);
+      }
     },
   );
 
