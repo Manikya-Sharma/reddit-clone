@@ -15,13 +15,16 @@ export const users = pgTable("users", {
   karma: integer().default(0),
   posts: integer()
     .references((): AnyPgColumn => posts.id)
-    .array(),
+    .array()
+    .default([]),
   comments: integer()
     .references((): AnyPgColumn => comments.id)
-    .array(),
+    .array()
+    .default([]),
   subs: integer()
     .references((): AnyPgColumn => posts.id)
-    .array(),
+    .array()
+    .default([]),
   createdAt: date().defaultNow(),
   updatedAt: date().defaultNow(),
 });
@@ -33,7 +36,8 @@ export const comments = pgTable("comments", {
   downvotes: integer().default(0),
   comments: integer()
     .references((): AnyPgColumn => comments.id)
-    .array(),
+    .array()
+    .default([]),
   author: integer().references(() => users.id),
   createdAt: date().defaultNow(),
   updatedAt: date().defaultNow(),
@@ -46,7 +50,8 @@ export const posts = pgTable("posts", {
   downvotes: integer().default(0),
   comments: integer()
     .references((): AnyPgColumn => comments.id)
-    .array(),
+    .array()
+    .default([]),
   author: integer().references(() => users.id),
   createdAt: date().defaultNow(),
   updatedAt: date().defaultNow(),
@@ -60,15 +65,18 @@ export const subs = pgTable("subs", {
   description: varchar({ length: 20 }),
   members: integer()
     .references(() => users.id)
-    .array(),
+    .array()
+    .default([]),
   mods: integer()
     .references(() => users.id)
-    .array(),
+    .array()
+    .default([]),
   posts: integer()
     .references(() => posts.id)
-    .array(),
+    .array()
+    .default([]),
   status: statusEnum().default("public"),
-  rules: varchar({ length: 30 }).array(),
+  rules: varchar({ length: 30 }).array().default([]),
   createdAt: date().defaultNow(),
   updatedAt: date().defaultNow(),
 });
