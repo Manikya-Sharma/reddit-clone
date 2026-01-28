@@ -49,8 +49,14 @@ const postsRouteApp = new Hono()
           .returning()
       )[0];
 
-      await db.update(users).set({ posts: [...(user.posts ?? []), post.id] });
-      await db.update(subs).set({ posts: [...(sub.posts ?? []), post.id] });
+      await db
+        .update(users)
+        .set({ posts: [...(user.posts ?? []), post.id] })
+        .where(eq(users.id, userId));
+      await db
+        .update(subs)
+        .set({ posts: [...(sub.posts ?? []), post.id] })
+        .where(eq(subs.id, parsedSubId));
 
       return c.json({ message: "ok" });
     },

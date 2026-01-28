@@ -30,6 +30,10 @@ export function ShowFeed({
   const posts = postsResults.map((post) => post.data);
   const isLoadingPosts = postsResults.some((post) => post.isLoading);
 
+  if (posts.some((post) => post === undefined)) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-5 w-full max-w-2xl mt-20">
       {posts.map((post) => (
@@ -63,7 +67,7 @@ function Post({ post }: { post: typeof posts.$inferSelect | undefined }) {
       <a href={`/r/${sub?.sub.title}/comments/${post?.id}`}>
         <div className="text-xs flex gap-2 hover:text-blue-300">
           <Image src="/icons/outline-logo.svg" width={12} height={12} alt="" />
-          {post?.title}
+          r/{sub?.sub.title}
           <span>-</span>
           <span>
             {formatDistance(

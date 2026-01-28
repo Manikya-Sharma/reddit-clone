@@ -1,3 +1,5 @@
+import HomeFeed from "@/components/page/home-feed";
+
 export default async function Home() {
-  return null;
+  return <HomeFeed />;
 }
