@@ -21,7 +21,7 @@ export default function NavOptions() {
     onSuccess: () => router.refresh(),
   });
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-end gap-2 min-w-76.75">
       {showModal === "login" ? (
         <Modal>
           <LoginCard setShowModal={setShowModal} />

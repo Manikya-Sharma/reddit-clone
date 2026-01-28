@@ -6,7 +6,7 @@ import WithTooltip from "./with-tooltip";
 
 export default function Navbar() {
   return (
-    <nav className="bg-inherit h-14 border-b border-neutral-700 text-neutral-200 flex items-center px-4 isolate">
+    <nav className="bg-inherit fixed inset-x-0 h-14 border-b border-neutral-700 text-neutral-200 flex items-center px-4 isolate">
       <WithTooltip tooltipText="Go to Reddit Home" side="right">
         <Link href="/">
           <Image

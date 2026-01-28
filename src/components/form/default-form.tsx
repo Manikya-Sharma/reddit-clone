@@ -1,8 +1,8 @@
+import type { IChangeEvent } from "@rjsf/core";
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
-import { ThemedForm } from "./themed-form";
-import { IChangeEvent } from "@rjsf/core";
 import type { FormEvent } from "react";
+import { ThemedForm } from "./themed-form";
 
 type DefaultFormProps<T> = {
   schema: RJSFSchema;
