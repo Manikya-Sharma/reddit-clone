@@ -47,7 +47,9 @@ export const comments = pgTable("comments", {
 
 export const posts = pgTable("posts", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  title: varchar({ length: 200 }),
   content: varchar({ length: 200 }),
+  sub: integer().references((): AnyPgColumn => subs.id),
   upvotes: integer().default(0),
   downvotes: integer().default(0),
   comments: integer()

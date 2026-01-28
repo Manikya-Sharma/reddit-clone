@@ -22,11 +22,19 @@ export default function SelectWidget(props: WidgetProps) {
         <SelectValue placeholder={props.placeholder} />
       </SelectTrigger>
       <SelectContent>
-        {props.options.enumOptions?.map(({ value, label }) => (
-          <SelectItem key={value} value={value}>
-            {label}
-          </SelectItem>
-        ))}
+        {props.options.enumOptions
+          ?.filter(({ label }) =>
+            props.name === "sub"
+              ? props.registry.formContext.has(parseInt(label, 10))
+              : true,
+          )
+          .map(({ value, label }) => (
+            <SelectItem key={value} value={value}>
+              {props.name === "sub"
+                ? props.registry.formContext.get(parseInt(label, 10))
+                : label}
+            </SelectItem>
+          ))}
       </SelectContent>
     </Select>
   );

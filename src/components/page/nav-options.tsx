@@ -40,10 +40,10 @@ export default function NavOptions() {
             <Image src="/icons/chat-icon.svg" width={20} height={20} alt="" />
           </NavButton>
           <NavButton tooltipText="Create post" disabled={isLoading}>
-            <div className="flex gap-2">
+            <a href="/submit" className="flex gap-2">
               <Image src="/icons/chat-icon.svg" width={20} height={20} alt="" />
               <span className="text-sm">Create</span>
-            </div>
+            </a>
           </NavButton>
           <NavButton tooltipText="Open inbox" disabled={isLoading}>
             <Image src="/icons/inbox-icon.svg" width={20} height={20} alt="" />

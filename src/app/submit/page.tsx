@@ -1,3 +1,9 @@
+import NewPostCard from "@/components/page/create-post-card";
+
 export default function Page() {
-  return <div>Submit page</div>;
+  return (
+    <div>
+      <NewPostCard />
+    </div>
+  );
 }

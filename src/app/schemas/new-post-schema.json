@@ -1,0 +1,13 @@
+{
+  "title": "Create a new post",
+  "description": "Please follow the rules of the sub before posting",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    }
+  },
+  "required": ["title", "content", "sub"]
+}

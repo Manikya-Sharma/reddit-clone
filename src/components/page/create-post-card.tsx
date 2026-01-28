@@ -4,41 +4,53 @@ import type { RJSFSchema } from "@rjsf/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useGetUser } from "@/app/hooks/useGetUser";
-import schema from "@/app/schemas/new-com-schema.json";
-import uiSchema from "@/app/schemas/new-com-ui-schema.json";
+import schema from "@/app/schemas/new-post-schema.json";
+import uiSchema from "@/app/schemas/new-post-ui-schema.json";
 import { DefaultForm } from "@/components/form/default-form";
 import { client } from "@/server/client";
+import { useGetSubs } from "@/app/hooks/useGetSubs";
 
 type FormData = {
   title: string;
-  description: string;
-  status: "public" | "private";
+  content: string;
+  sub: string | undefined;
 };
 
-export default function NewComCard() {
-  const [formData, setFormData] = useState<FormData>({
-    title: "",
-    description: "",
-    status: "public",
-  });
+export default function NewPostCard() {
+  const [formData, setFormData] = useState<FormData>();
 
   const { data: user, isLoading } = useGetUser();
+  const subResult = useGetSubs(user?.subs);
+  const userSubs = subResult.map((sub) => sub.data);
+
+  const newSchema = {
+    ...schema,
+    properties: {
+      ...schema.properties,
+      sub: {
+        enum: userSubs.map((sub) => String(sub?.sub.id)),
+      },
+    },
+  } as RJSFSchema;
+
+  const newUiSchema = {
+    ...uiSchema,
+  };
 
   const {
-    mutate: createSub,
+    mutate: createPost,
     isPending,
     error,
   } = useMutation({
     mutationFn: async (data: FormData) => {
       if (!user || !user.id) {
-        throw new Error("You need to login to create a sub");
+        throw new Error("You need to login to create a post");
       }
-      await client.api.v1.subs.create.$post({
-        json: {
-          ...data,
-          rules: [],
-          userId: user.id,
-        },
+      if (!data.sub) {
+        throw new Error("Need to post to a sub");
+      }
+      await client.api.v1.posts.$post({
+        json: { ...data, userId: user.id, subId: data.sub },
       });
     },
   });
@@ -47,14 +59,14 @@ export default function NewComCard() {
     <div className="flex flex-col rounded-2xl px-18 py-20 max-w-prose">
       <div className="grow shrink-0">
         <DefaultForm
-          schema={schema as RJSFSchema}
-          uiSchema={uiSchema}
+          schema={newSchema}
+          uiSchema={newUiSchema}
           formData={formData}
           onChange={(data) => {
             setFormData(data);
           }}
           onSubmit={(data) => {
-            createSub(data.formData);
+            createPost(data.formData);
           }}
           disabled={isPending || isLoading}
         />

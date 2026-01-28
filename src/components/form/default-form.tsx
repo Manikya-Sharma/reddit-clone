@@ -1,8 +1,12 @@
+"use client";
+
 import type { IChangeEvent } from "@rjsf/core";
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
 import type { FormEvent } from "react";
 import { ThemedForm } from "./themed-form";
+import { useGetUser } from "@/app/hooks/useGetUser";
+import { useGetSubs } from "@/app/hooks/useGetSubs";
 
 type DefaultFormProps<T> = {
   schema: RJSFSchema;
@@ -21,12 +25,21 @@ export function DefaultForm<T>({
   onSubmit,
   disabled,
 }: DefaultFormProps<T>) {
+  const { data: user } = useGetUser();
+  const subsResult = useGetSubs(user?.subs);
+  const userSubs = subsResult.map((sub) => sub.data);
+  const idToTitleMap = new Map();
+  userSubs.forEach((sub) => {
+    if (!sub?.sub.id) return;
+    idToTitleMap.set(sub.sub.id, sub.sub.title);
+  });
   return (
     <ThemedForm
       formData={formData}
       onChange={(data) => {
         onChange(data.formData as T);
       }}
+      formContext={idToTitleMap}
       schema={schema}
       uiSchema={uiSchema}
       validator={validator}

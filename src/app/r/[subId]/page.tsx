@@ -1,14 +1,14 @@
 "use client";
+import { useQueryClient } from "@tanstack/react-query";
 import { format, parse } from "date-fns";
 import Image from "next/image";
 import React from "react";
 import { useGetSub } from "@/app/hooks/useGetSub";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
 import { useGetUser } from "@/app/hooks/useGetUser";
-import { ShowFeed } from "@/components/page/show-feed";
-import { useLeaveSub } from "@/app/hooks/useLeaveSub";
 import { useJoinSub } from "@/app/hooks/useJoinSub";
-import { useQueryClient } from "@tanstack/react-query";
+import { useLeaveSub } from "@/app/hooks/useLeaveSub";
+import { ShowFeed } from "@/components/page/show-feed";
 
 export default function Page({ params }: PageProps<"/r/[subId]">) {
   const { subId } = React.use(params);
@@ -67,13 +67,13 @@ export default function Page({ params }: PageProps<"/r/[subId]">) {
           {sub?.title}
         </div>
         <div className="flex gap-2 text-xs">
-          <button
-            type="button"
+          <a
+            href={`/submit?from=${sub?.id}`}
             className="flex items-center gap-2 px-3 py-2 rounded-full bg-black"
           >
             <Image src="/icons/plus-icon.svg" width={16} height={16} alt="" />
             Create Post
-          </button>
+          </a>
           <button
             type="button"
             className="flex items-center gap-2 px-3 py-2 rounded-full bg-blue-600 hover:bg-blue-800 cursor-pointer"
