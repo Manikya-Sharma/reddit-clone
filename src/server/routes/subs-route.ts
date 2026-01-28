@@ -45,6 +45,7 @@ const subsRouteApp = new Hono()
         .update(users)
         .set({ subs: [...(existingUser.subs ?? []), obtainedSub.id] })
         .where(eq(users.id, userId));
+      return c.json({ message: "ok" });
     },
   )
   .post(

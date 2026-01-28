@@ -1,6 +1,6 @@
 import {
-  char,
   type AnyPgColumn,
+  char,
   date,
   integer,
   pgEnum,
@@ -63,8 +63,8 @@ export const statusEnum = pgEnum("status", ["public", "private"]);
 
 export const subs = pgTable("subs", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  title: varchar({ length: 20 }),
-  description: varchar({ length: 20 }),
+  title: varchar({ length: 200 }),
+  description: varchar({ length: 200 }),
   members: integer()
     .references(() => users.id)
     .array()
@@ -78,12 +78,13 @@ export const subs = pgTable("subs", {
     .array()
     .default([]),
   status: statusEnum().default("public"),
-  rules: varchar({ length: 30 }).array().default([]),
+  rules: varchar({ length: 200 }).array().default([]),
   createdAt: date().defaultNow(),
   updatedAt: date().defaultNow(),
 });
 
 export const sessions = pgTable("sessions", {
-  email: varchar({ length: 20 }),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  email: varchar({ length: 200 }),
   descriptor: char({ length: 36 }).default(uuid()),
 });
