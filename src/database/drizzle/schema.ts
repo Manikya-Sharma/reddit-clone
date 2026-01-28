@@ -24,7 +24,7 @@ export const users = pgTable("users", {
     .array()
     .default([]),
   subs: integer()
-    .references((): AnyPgColumn => posts.id)
+    .references((): AnyPgColumn => subs.id)
     .array()
     .default([]),
   createdAt: date().defaultNow(),

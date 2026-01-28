@@ -60,7 +60,7 @@ export default function Page({ params }: PageProps<"/r/[subId]">) {
             <span className="text-2xl font-bold">r/{sub?.title}</span>
           </div>
         </div>
-        <ShowFeed />
+        <ShowFeed postIds={sub?.posts} />
       </div>
       <div className="fixed top-16 right-2 bg-neutral-700 p-4 rounded-md flex flex-col gap-3 w-68">
         <div className="flex justify-between items-center text-lg">

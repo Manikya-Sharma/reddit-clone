@@ -15,3 +15,23 @@ export const useGetSub = ({ title }: { title: string }) => {
     queryKey: ["get-sub-title", title],
   });
 };
+
+export const useGetSubById = ({ id }: { id: number | null | undefined }) => {
+  return useQuery({
+    queryFn: async () => {
+      if (!id) {
+        throw new Error("Id needed");
+      }
+      const subResult = await client.api.v1.subs["get-sub"].$post({
+        json: {
+          id,
+        },
+      });
+      if (subResult.status !== 200) {
+        throw new Error("Could not get sub");
+      }
+      return await subResult.json();
+    },
+    queryKey: ["get-sub", id],
+  });
+};
