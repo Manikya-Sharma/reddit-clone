@@ -1,9 +1,9 @@
-import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
+import { eq } from "drizzle-orm";
+import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@/database/drizzle/db";
 import { subs, users } from "@/database/drizzle/schema";
-import { eq } from "drizzle-orm";
 
 const subsRouteApp = new Hono()
   .post(
@@ -57,6 +57,34 @@ const subsRouteApp = new Hono()
         return c.json({ message: "not found" }, 404);
       }
       return c.json({ sub: result[0] });
+    },
+  )
+  .post(
+    "/leave",
+    zValidator(
+      "json",
+      z.object({
+        subId: z.number(),
+        userId: z.number(),
+      }),
+    ),
+    async (c) => {
+      const { userId, subId } = c.req.valid("json");
+      const userResults = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, userId));
+      if (!userResults || userResults.length === 0) {
+        return c.json({ message: "user not found" }, 404);
+      }
+      const user = userResults[0];
+      const existingSubs = user.subs;
+      if (!user.subs?.includes(subId)) {
+        return c.json({ message: "sub not joined" }, 404);
+      }
+      const newSubs = existingSubs?.filter((sub) => sub !== subId);
+      await db.update(users).set({ subs: newSubs }).where(eq(users.id, userId));
+      return c.json({ message: "Ok" });
     },
   );
 
