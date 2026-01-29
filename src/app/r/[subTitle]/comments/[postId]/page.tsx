@@ -53,7 +53,7 @@ function WithComments({
   post,
 }: {
   sub: typeof subs.$inferSelect | undefined;
-  user: typeof users.$inferSelect | undefined;
+  user: typeof users.$inferSelect | undefined | null;
   post: typeof posts.$inferSelect | undefined;
 }) {
   return (

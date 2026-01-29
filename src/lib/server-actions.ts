@@ -10,7 +10,7 @@ export async function getUser() {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("user");
   if (!sessionCookie) {
-    unauthorized();
+    return { user: null };
   }
   const { email, descriptor } = JSON.parse(sessionCookie.value);
   const existingSession = await db
