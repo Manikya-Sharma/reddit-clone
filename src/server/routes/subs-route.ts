@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@/database/drizzle/db";
 import { subs, users } from "@/database/drizzle/schema";
+import { sub } from "date-fns";
 
 const subsRouteApp = new Hono()
   .post(
@@ -127,6 +128,10 @@ const subsRouteApp = new Hono()
       await db.update(users).set({ subs: newSubs }).where(eq(users.id, userId));
       return c.json({ message: "Ok" });
     },
-  );
+  )
+  .get("/all", async (c) => {
+    const result = await db.select().from(subs);
+    return c.json({ result });
+  });
 
 export { subsRouteApp };

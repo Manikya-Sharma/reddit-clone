@@ -75,7 +75,7 @@ function Post({ post }: { post: typeof posts.$inferSelect | undefined }) {
 
   return (
     <div className="block p-5 pb-2 rounded-md hover:bg-neutral-800">
-      <a href={`/r/${sub?.sub.title}/comments/${post?.id}`}>
+      <a href={`/r/${sub?.sub.title}`}>
         <div className="text-xs flex gap-2 hover:text-blue-300">
           <Image src="/icons/outline-logo.svg" width={12} height={12} alt="" />
           r/{sub?.sub.title}
