@@ -4,34 +4,35 @@ import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useCallback } from "react";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
+import { useGetUser } from "@/app/hooks/useGetUser";
 import { useLeaveSub } from "@/app/hooks/useLeaveSub";
-import type { subs, users } from "@/database/drizzle/schema";
+import type { subs } from "@/database/drizzle/schema";
 import { Skeleton } from "../ui/skeleton";
 import WithTooltip from "./with-tooltip";
 
-export default function CommunityList({
-  user,
-}: {
-  user: typeof users.$inferSelect;
-}) {
-  const subsResult = useGetSubs(user.subs);
+export default function CommunityList() {
+  const { data: user, isLoading: isLoadingUser } = useGetUser();
+  const subsResult = useGetSubs(user?.subs);
   const userSubs = subsResult.map((sub) => sub.data);
   const isLoadingSubs = subsResult.some((sub) => sub.isLoading);
   const queryClient = useQueryClient();
   const { mutate: leaveSub, isPending } = useLeaveSub({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-user"] });
+      queryClient.invalidateQueries();
     },
   });
   const leaveSubWithUser = useCallback(
     ({ subId }: { subId: number | null | undefined }) => {
-      leaveSub({ userId: user.id, subId });
+      leaveSub({ userId: user?.id, subId });
     },
-    [user.id, leaveSub],
+    [user?.id, leaveSub],
   );
+
+  const isLoading = isLoadingUser || isLoadingSubs;
+
   return (
     <ul className="flex flex-col gap-2">
-      {isLoadingSubs
+      {isLoading
         ? Array(5)
             .fill(null)
             .map((_, idx) => (

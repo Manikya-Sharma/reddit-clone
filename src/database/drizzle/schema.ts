@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   type AnyPgColumn,
   char,
@@ -7,7 +8,6 @@ import {
   pgTable,
   varchar,
 } from "drizzle-orm/pg-core";
-import { v4 as uuid } from "uuid";
 
 export const users = pgTable("users", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -100,5 +100,5 @@ export const subs = pgTable("subs", {
 export const sessions = pgTable("sessions", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   email: varchar({ length: 200 }),
-  descriptor: char({ length: 36 }).default(uuid()),
+  descriptor: char({ length: 36 }).default(sql`gen_random_uuid()`),
 });

@@ -7,13 +7,13 @@ import { useGetSubById } from "@/app/hooks/useGetSub";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import { cn } from "@/lib/utils";
 import { client } from "@/server/client";
-import ReplyForm from "./reply-form";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import ReplyForm from "./reply-form";
 
 export default function VotesSection({
   postId,

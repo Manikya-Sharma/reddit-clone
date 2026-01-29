@@ -3,7 +3,8 @@
   "description": "By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.",
   "properties": {
     "username": {
-      "type": "string"
+      "type": "string",
+	  "pattern": "^[a-zA-Z0-9\\-_]+$"
     },
     "email": {
       "type": "string"

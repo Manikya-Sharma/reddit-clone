@@ -2,13 +2,13 @@ import { formatDistance, parse } from "date-fns";
 import { eq } from "drizzle-orm";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import BackButton from "@/components/page/back-button";
 import Comments from "@/components/page/comments";
 import SubSide from "@/components/page/sub-side";
 import VotesSection from "@/components/page/votes-section";
 import { db } from "@/database/drizzle/db";
 import { posts, subs, type users } from "@/database/drizzle/schema";
 import { getUser } from "@/lib/server-actions";
-import BackButton from "@/components/page/back-button";
 
 export default async function Page({
   params,

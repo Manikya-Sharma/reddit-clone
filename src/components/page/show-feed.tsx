@@ -61,7 +61,11 @@ export function ShowFeed({
 }
 
 function EmptyState() {
-  return <div>No posts yet, begin the communication!</div>;
+  return (
+    <div className="min-h-80 flex items-center justify-center text-center">
+      <div>No posts yet, begin the communication!</div>
+    </div>
+  );
 }
 
 function Post({

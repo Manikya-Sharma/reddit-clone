@@ -8,6 +8,7 @@ import schema from "@/app/schemas/new-com-schema.json";
 import uiSchema from "@/app/schemas/new-com-ui-schema.json";
 import { DefaultForm } from "@/components/form/default-form";
 import { client } from "@/server/client";
+import { useRouter } from "next/navigation";
 
 type FormData = {
   title: string;
@@ -24,6 +25,8 @@ export default function NewComCard() {
 
   const { data: user, isLoading } = useGetUser();
 
+  const router = useRouter();
+
   const {
     mutate: createSub,
     isPending,
@@ -33,14 +36,18 @@ export default function NewComCard() {
       if (!user || !user.id) {
         throw new Error("You need to login to create a sub");
       }
-      await client.api.v1.subs.create.$post({
+      const result = await client.api.v1.subs.create.$post({
         json: {
           ...data,
           rules: [],
           userId: user.id,
         },
       });
+      if (result.status !== 200) {
+        throw new Error("Could not create new sub");
+      }
     },
+    onSuccess: () => router.replace(`/r/${formData.title}`),
   });
 
   return (

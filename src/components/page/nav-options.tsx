@@ -1,8 +1,6 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGetLogout } from "@/app/hooks/useGetLogout";
 import { useGetUser } from "@/app/hooks/useGetUser";
@@ -19,10 +17,10 @@ export default function NavOptions() {
   const [showModal, setShowModal] = useState<"none" | "login" | "signup">(
     "none",
   );
-  const queryClient = useQueryClient();
-  const router = useRouter();
   const { mutate: logout } = useGetLogout({
-    onSuccess: () => {},
+    onSuccess: () => {
+      window.location.reload();
+    },
   });
   return (
     <div className="flex items-center justify-end gap-2 min-w-76.75">
@@ -52,14 +50,7 @@ export default function NavOptions() {
           <NavButton tooltipText="Open inbox" disabled={isLoading}>
             <Image src="/icons/inbox-icon.svg" width={20} height={20} alt="" />
           </NavButton>
-          <UserDropdown
-            user={user}
-            logout={() => {
-              logout();
-              queryClient.invalidateQueries();
-              router.refresh();
-            }}
-          >
+          <UserDropdown user={user} logout={() => logout()}>
             <WithTooltip tooltipText="Open profile menu">
               <ProfilePic firstChar={user.username?.[0] ?? ""} />
             </WithTooltip>

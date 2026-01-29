@@ -2,7 +2,6 @@
 
 import type { RJSFSchema } from "@rjsf/utils";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import signUpSchema from "@/app/schemas/signup-schema.json";
 import signUpUiSchema from "@/app/schemas/signup-ui-schema.json";
@@ -24,8 +23,6 @@ export default function SignupCard({
 }) {
   const [formData, setFormData] = useState<FormData>();
 
-  const router = useRouter();
-
   const {
     mutate: signUp,
     isPending,
@@ -37,6 +34,7 @@ export default function SignupCard({
         throw new Error("Invalid username or email");
       }
     },
+    onSuccess: () => window.location.reload(),
   });
 
   return (
@@ -51,7 +49,6 @@ export default function SignupCard({
           }}
           onSubmit={(data) => {
             signUp(data.formData);
-            router.refresh();
           }}
           disabled={isPending}
         />

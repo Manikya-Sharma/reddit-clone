@@ -3,7 +3,8 @@
   "description": "Create a new community to create a platform with people with common interests to communicate",
   "properties": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9\\-_]+$"
     },
     "description": {
       "type": "string"

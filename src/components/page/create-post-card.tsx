@@ -9,6 +9,7 @@ import schema from "@/app/schemas/new-post-schema.json";
 import uiSchema from "@/app/schemas/new-post-ui-schema.json";
 import { DefaultForm } from "@/components/form/default-form";
 import { client } from "@/server/client";
+import { useRouter } from "next/navigation";
 
 type FormData = {
   title: string;
@@ -37,6 +38,8 @@ export default function NewPostCard() {
     ...uiSchema,
   };
 
+  const router = useRouter();
+
   const {
     mutate: createPost,
     isPending,
@@ -52,6 +55,19 @@ export default function NewPostCard() {
       await client.api.v1.posts.$post({
         json: { ...data, userId: user.id, subId: data.sub },
       });
+    },
+    onSuccess: async () => {
+      const parsedSubId = parseInt(formData?.sub ?? "", 10);
+      const subResult = await client.api.v1.subs["get-sub"].$post({
+        json: { id: parsedSubId },
+      });
+      if (subResult.status !== 200) {
+        // in the worst case, move the user away from this page
+        router.replace("/");
+        return;
+      }
+      const { sub } = await subResult.json();
+      router.replace(`/r/${sub.title}`);
     },
   });
 
