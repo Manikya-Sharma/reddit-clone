@@ -127,18 +127,45 @@ export default function Aside({
                 width: 20,
                 height: 20,
               },
-              ...userSubs
-                .filter(
-                  (sub): sub is { sub: typeof subs.$inferSelect } =>
-                    sub !== undefined,
-                )
-                .map(({ sub }) => ({
-                  icon: "/icons/outline-logo.svg",
-                  href: `/r/${sub.title}`,
-                  text: sub.title ?? "",
-                  width: 20,
-                  height: 20,
-                })),
+              ...(isLoadingSubs
+                ? [
+                    {
+                      icon: "/icons/outline-logo.svg",
+                      href: `$`,
+                      text: "Loading...",
+                      key: 1,
+                      width: 20,
+                      height: 20,
+                    },
+                    {
+                      icon: "/icons/outline-logo.svg",
+                      href: `$`,
+                      text: "Loading...",
+                      key: 2,
+                      width: 20,
+                      height: 20,
+                    },
+                    {
+                      icon: "/icons/outline-logo.svg",
+                      href: `$`,
+                      text: "Loading...",
+                      key: 3,
+                      width: 20,
+                      height: 20,
+                    },
+                  ]
+                : userSubs
+                    .filter(
+                      (sub): sub is { sub: typeof subs.$inferSelect } =>
+                        sub !== undefined,
+                    )
+                    .map(({ sub }) => ({
+                      icon: "/icons/outline-logo.svg",
+                      href: `/r/${sub.title}`,
+                      text: sub.title ?? "",
+                      width: 20,
+                      height: 20,
+                    }))),
             ]}
           />
           <Separator />
@@ -219,6 +246,7 @@ function Section({
     text: string;
     width: number;
     height: number;
+    key?: number;
   }[];
   collapseTitle?: string;
 }) {
@@ -245,7 +273,7 @@ function Section({
       >
         {items?.map((item) => (
           <a
-            key={item.text}
+            key={item.key ?? item.text}
             href={item.href}
             className="flex gap-2 items-center py-3 px-4 rounded-lg hover:bg-neutral-900"
           >

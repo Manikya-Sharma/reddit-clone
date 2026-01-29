@@ -21,7 +21,7 @@ export default function Page({ params }: PageProps<"/user/[username]">) {
             <span className="text-lg">u/{user?.username}</span>
           </div>
         </div>
-        <ShowFeed postIds={user?.posts} />
+        <ShowFeed withEdit={true} postIds={user?.posts} />
       </div>
       <div className="fixed top-16 right-2 bg-neutral-700 p-4 rounded-md flex flex-col gap-3 w-68">
         <div className="flex justify-between items-center text-lg">

@@ -67,14 +67,12 @@ export default function Page({ params }: PageProps<"/r/[subId]">) {
               {isLoading ? (
                 <Skeleton className="inline-block h-5 w-20 mt-1"></Skeleton>
               ) : (
-                <>
-                  r/{sub?.title}
-                </>
+                <>r/{sub?.title}</>
               )}
             </span>
           </div>
         </div>
-        <ShowFeed isLoading={isLoading} postIds={sub?.posts} />
+        <ShowFeed isLoading={isLoading} postIds={sub?.posts} withEdit={true} />
       </div>
       <div className="fixed top-16 right-2 bg-neutral-700 p-4 rounded-md flex flex-col gap-3 w-68">
         <div className="flex justify-between items-center text-lg">

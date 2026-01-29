@@ -11,9 +11,11 @@ import { client } from "@/server/client";
 export function ShowFeed({
   postIds,
   isLoading: isLoadingMeta,
+  withEdit,
 }: {
   postIds: Array<number> | null | undefined;
   isLoading?: boolean;
+  withEdit?: boolean;
 }) {
   const postsResults = useQueries({
     queries: (postIds ?? []).map((postId) => ({
@@ -36,16 +38,18 @@ export function ShowFeed({
   const isLoading = isLoadingMeta || isLoadingPosts;
 
   return (
-    <div className="flex flex-col gap-5 w-full max-w-2xl mt-20">
+    <div className="flex flex-col gap-5 w-full max-w-2xl relative">
       {isLoading ? (
-        <Loader2 className="size-10 animate-spin w-fit mx-auto" />
+        <div className="h-40">
+          <Loader2 className="size-10 animate-spin w-fit absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" />
+        </div>
       ) : posts.length === 0 ? (
         <EmptyState />
       ) : (
         posts.map((post) => (
           <div key={post?.post.id}>
             <div className="h-px bg-neutral-700 w-full mb-2"></div>
-            <Post post={post?.post} />
+            <Post post={post?.post} withEdit={withEdit} />
           </div>
         ))
       )}
@@ -57,7 +61,13 @@ function EmptyState() {
   return <div>No posts yet, begin the communication!</div>;
 }
 
-function Post({ post }: { post: typeof posts.$inferSelect | undefined }) {
+function Post({
+  post,
+  withEdit,
+}: {
+  post: typeof posts.$inferSelect | undefined;
+  withEdit?: boolean;
+}) {
   const { data: sub } = useGetSubById({ id: post?.sub });
   const queryClient = useQueryClient();
 
@@ -74,7 +84,7 @@ function Post({ post }: { post: typeof posts.$inferSelect | undefined }) {
   };
 
   return (
-    <div className="block p-5 pb-2 rounded-md hover:bg-neutral-800">
+    <div className="block p-2 pb-2 rounded-md hover:bg-neutral-800">
       <a href={`/r/${sub?.sub.title}`}>
         <div className="text-xs flex gap-2 hover:text-blue-300">
           <Image src="/icons/outline-logo.svg" width={12} height={12} alt="" />
@@ -91,59 +101,76 @@ function Post({ post }: { post: typeof posts.$inferSelect | undefined }) {
           </span>
         </div>
         <div className="text-3xl">{post?.title}</div>
-        <div className="mt-5">{post?.content}</div>
+        <div className="mt-5 text-ellipsis max-w-full overflow-hidden">
+          {post?.content}
+        </div>
       </a>
       <div className="flex gap-3 mt-5">
-        <div className="rounded-full flex gap-2 items-center text-sm bg-neutral-700">
-          <button
-            type="button"
-            className="p-2 hover:bg-neutral-600 rounded-full group"
-            onClick={() => upvote()}
+        {withEdit ? (
+          <div className="rounded-full flex gap-2 items-center text-sm bg-neutral-700">
+            <button
+              type="button"
+              className="p-2 hover:bg-neutral-600 rounded-full group"
+              onClick={() => upvote()}
+            >
+              <Image
+                src="/icons/up-icon.svg"
+                width={16}
+                height={16}
+                alt=""
+                className="block group-hover:hidden"
+              />
+              <Image
+                src="/icons/up-icon-red.svg"
+                width={16}
+                height={16}
+                alt=""
+                className="group-hover:block hidden"
+              />
+            </button>
+            {(post?.upvotes ?? 0) - (post?.downvotes ?? 0)}
+            <button
+              type="button"
+              className="p-2 hover:bg-neutral-600 rounded-full group"
+              onClick={() => downvote()}
+            >
+              <Image
+                src="/icons/down-icon.svg"
+                width={16}
+                height={16}
+                alt=""
+                className="block group-hover:hidden"
+              />
+              <Image
+                src="/icons/down-icon-blue.svg"
+                width={16}
+                height={16}
+                alt=""
+                className="group-hover:block hidden"
+              />
+            </button>
+          </div>
+        ) : (
+          <div className="text-xs">
+            {(post?.upvotes ?? 0) - (post?.downvotes ?? 0)} upvotes
+          </div>
+        )}
+        {withEdit ? (
+          <a
+            href={`/r/${sub?.sub.title}/comments/${post?.id}`}
+            className="rounded-full flex gap-2 items-center text-sm bg-neutral-700 px-4 hover:bg-neutral-600"
           >
             <Image
-              src="/icons/up-icon.svg"
+              src="/icons/comments-icon.svg"
               width={16}
               height={16}
               alt=""
-              className="block group-hover:hidden"
             />
-            <Image
-              src="/icons/up-icon-red.svg"
-              width={16}
-              height={16}
-              alt=""
-              className="group-hover:block hidden"
-            />
-          </button>
-          {(post?.upvotes ?? 0) - (post?.downvotes ?? 0)}
-          <button
-            type="button"
-            className="p-2 hover:bg-neutral-600 rounded-full group"
-            onClick={() => downvote()}
-          >
-            <Image
-              src="/icons/down-icon.svg"
-              width={16}
-              height={16}
-              alt=""
-              className="block group-hover:hidden"
-            />
-            <Image
-              src="/icons/down-icon-blue.svg"
-              width={16}
-              height={16}
-              alt=""
-              className="group-hover:block hidden"
-            />
-          </button>
-        </div>
-        <a
-          href={`/r/${sub?.sub.title}/comments/${post?.id}`}
-          className="rounded-full flex gap-2 items-center text-sm bg-neutral-700 px-4 hover:bg-neutral-600"
-        >
-          <Image src="/icons/comments-icon.svg" width={16} height={16} alt="" />
-          {post?.comments?.length}
-        </a>
+            {post?.comments?.length}
+          </a>
+        ) : (
+          <div className="text-xs">{post?.comments?.length ?? 0} Comments</div>
+        )}
       </div>
     </div>
   );
