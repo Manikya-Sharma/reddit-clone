@@ -34,8 +34,14 @@ export const users = pgTable("users", {
 export const comments = pgTable("comments", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   content: varchar({ length: 200 }),
-  upvotes: integer().default(0),
-  downvotes: integer().default(0),
+  upvotes: integer()
+    .references(() => users.id)
+    .array()
+    .default([]),
+  downvotes: integer()
+    .references(() => users.id)
+    .array()
+    .default([]),
   comments: integer()
     .references((): AnyPgColumn => comments.id)
     .array()
@@ -50,8 +56,14 @@ export const posts = pgTable("posts", {
   title: varchar({ length: 200 }),
   content: varchar({ length: 200 }),
   sub: integer().references((): AnyPgColumn => subs.id),
-  upvotes: integer().default(0),
-  downvotes: integer().default(0),
+  upvotes: integer()
+    .references(() => users.id)
+    .array()
+    .default([]),
+  downvotes: integer()
+    .references(() => users.id)
+    .array()
+    .default([]),
   comments: integer()
     .references((): AnyPgColumn => comments.id)
     .array()

@@ -1,9 +1,9 @@
-import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
+import { eq } from "drizzle-orm";
+import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@/database/drizzle/db";
 import { posts, subs, users } from "@/database/drizzle/schema";
-import { eq } from "drizzle-orm";
 
 const postsRouteApp = new Hono()
   .post(
@@ -75,9 +75,9 @@ const postsRouteApp = new Hono()
   )
   .post(
     "/upvote",
-    zValidator("json", z.object({ postId: z.number() })),
+    zValidator("json", z.object({ postId: z.number(), userId: z.number() })),
     async (c) => {
-      const { postId } = c.req.valid("json");
+      const { postId, userId } = c.req.valid("json");
       const postsResult = await db
         .select()
         .from(posts)
@@ -86,18 +86,31 @@ const postsRouteApp = new Hono()
         return c.json({ message: "not found" }, 404);
       }
       const post = postsResult[0];
-      await db
-        .update(posts)
-        .set({ upvotes: (post.upvotes ?? 0) + 1 })
-        .where(eq(posts.id, postId));
+      if (post.downvotes?.includes(userId)) {
+        await db
+          .update(posts)
+          .set({ downvotes: post.downvotes.filter((id) => id !== userId) })
+          .where(eq(posts.id, postId));
+      }
+      if (post.upvotes?.includes(userId)) {
+        await db
+          .update(posts)
+          .set({ upvotes: post.upvotes.filter((id) => id !== userId) })
+          .where(eq(posts.id, postId));
+      } else {
+        await db
+          .update(posts)
+          .set({ upvotes: [...(post.upvotes ?? []), userId] })
+          .where(eq(posts.id, postId));
+      }
       return c.json({ message: "ok" });
     },
   )
   .post(
     "/downvote",
-    zValidator("json", z.object({ postId: z.number() })),
+    zValidator("json", z.object({ postId: z.number(), userId: z.number() })),
     async (c) => {
-      const { postId } = c.req.valid("json");
+      const { postId, userId } = c.req.valid("json");
       const postsResult = await db
         .select()
         .from(posts)
@@ -106,10 +119,23 @@ const postsRouteApp = new Hono()
         return c.json({ message: "not found" }, 404);
       }
       const post = postsResult[0];
-      await db
-        .update(posts)
-        .set({ upvotes: (post.upvotes ?? 0) - 1 })
-        .where(eq(posts.id, postId));
+      if (post.upvotes?.includes(userId)) {
+        await db
+          .update(posts)
+          .set({ upvotes: post.upvotes.filter((id) => id !== userId) })
+          .where(eq(posts.id, postId));
+      }
+      if (post.downvotes?.includes(userId)) {
+        await db
+          .update(posts)
+          .set({ downvotes: post.downvotes.filter((id) => id !== userId) })
+          .where(eq(posts.id, postId));
+      } else {
+        await db
+          .update(posts)
+          .set({ downvotes: [...(post.downvotes ?? []), userId] })
+          .where(eq(posts.id, postId));
+      }
       return c.json({ message: "ok" });
     },
   );

@@ -5,8 +5,10 @@ import { formatDistance, parse } from "date-fns";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useGetSubById } from "@/app/hooks/useGetSub";
+import { useGetUser } from "@/app/hooks/useGetUser";
 import type { posts } from "@/database/drizzle/schema";
 import { client } from "@/server/client";
+import { cn } from "@/lib/utils";
 
 export function ShowFeed({
   postIds,
@@ -68,20 +70,32 @@ function Post({
   post: typeof posts.$inferSelect | undefined;
   withEdit?: boolean;
 }) {
-  const { data: sub } = useGetSubById({ id: post?.sub });
+  const { data: sub, isLoading: isLoadingSub } = useGetSubById({
+    id: post?.sub,
+  });
+  const { data: user, isLoading: isLoadingUser } = useGetUser();
   const queryClient = useQueryClient();
 
+  const isLoading = isLoadingUser || isLoadingSub;
+
   const upvote = async () => {
-    if (!post?.id) return;
-    await client.api.v1.posts.upvote.$post({ json: { postId: post.id } });
+    if (!post?.id || !user?.id) return;
+    await client.api.v1.posts.upvote.$post({
+      json: { postId: post.id, userId: user.id },
+    });
     queryClient.invalidateQueries({ queryKey: ["get-post", post.id] });
   };
 
   const downvote = async () => {
-    if (!post?.id) return;
-    await client.api.v1.posts.downvote.$post({ json: { postId: post.id } });
+    if (!post?.id || !user?.id) return;
+    await client.api.v1.posts.downvote.$post({
+      json: { postId: post.id, userId: user.id },
+    });
     queryClient.invalidateQueries({ queryKey: ["get-post", post.id] });
   };
+
+  const isUpvoted = post?.upvotes?.includes(user?.id ?? -1);
+  const isDownvoted = post?.downvotes?.includes(user?.id ?? -1);
 
   return (
     <div className="block p-2 pb-2 rounded-md hover:bg-neutral-800">
@@ -118,8 +132,18 @@ function Post({
       </div>
       <div className="flex gap-3 mt-5">
         {withEdit ? (
-          <div className="rounded-full flex gap-2 items-center text-sm bg-neutral-700">
+          <div
+            className={cn(
+              "rounded-full flex gap-2 items-center text-sm",
+              isUpvoted
+                ? "bg-orange-400"
+                : isDownvoted
+                  ? "bg-blue-400"
+                  : "bg-neutral-700",
+            )}
+          >
             <button
+              disabled={isLoading}
               type="button"
               className="p-2 hover:bg-neutral-600 rounded-full group"
               onClick={() => upvote()}
@@ -139,8 +163,9 @@ function Post({
                 className="group-hover:block hidden"
               />
             </button>
-            {(post?.upvotes ?? 0) - (post?.downvotes ?? 0)}
+            {(post?.upvotes?.length ?? 0) - (post?.downvotes?.length ?? 0)}
             <button
+              disabled={isLoading}
               type="button"
               className="p-2 hover:bg-neutral-600 rounded-full group"
               onClick={() => downvote()}
@@ -163,7 +188,8 @@ function Post({
           </div>
         ) : (
           <div className="text-xs">
-            {(post?.upvotes ?? 0) - (post?.downvotes ?? 0)} upvotes
+            {(post?.upvotes?.length ?? 0) - (post?.downvotes?.length ?? 0)}{" "}
+            upvotes
           </div>
         )}
         {withEdit ? (

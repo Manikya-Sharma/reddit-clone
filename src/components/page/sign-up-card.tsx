@@ -2,12 +2,12 @@
 
 import type { RJSFSchema } from "@rjsf/utils";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import signUpSchema from "@/app/schemas/signup-schema.json";
 import signUpUiSchema from "@/app/schemas/signup-ui-schema.json";
 import { DefaultForm } from "@/components/form/default-form";
 import { client } from "@/server/client";
-import { useRouter } from "next/navigation";
 
 type FormData = {
   username: string;

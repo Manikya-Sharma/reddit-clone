@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { notFound, unauthorized } from "next/navigation";
 import { db } from "@/database/drizzle/db";
-import { sessions, subs, users } from "@/database/drizzle/schema";
+import { sessions, users } from "@/database/drizzle/schema";
 
 export async function getUser() {
   const cookieStore = await cookies();

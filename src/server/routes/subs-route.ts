@@ -4,7 +4,6 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@/database/drizzle/db";
 import { subs, users } from "@/database/drizzle/schema";
-import { sub } from "date-fns";
 
 const subsRouteApp = new Hono()
   .post(
