@@ -102,6 +102,18 @@ const userRouteApp = new Hono()
       return c.json({ message: "Not found" }, 404);
     }
     return c.json({ user: usersResult[0] });
-  });
+  })
+  .post(
+    "/get-by-id",
+    zValidator("json", z.object({ id: z.number() })),
+    async (c) => {
+      const { id } = c.req.valid("json");
+      const usersResult = await db.select().from(users).where(eq(users.id, id));
+      if (!usersResult || usersResult.length === 0) {
+        return c.json({ message: "Not found" }, 404);
+      }
+      return c.json({ user: usersResult[0] });
+    },
+  );
 
 export { userRouteApp };
