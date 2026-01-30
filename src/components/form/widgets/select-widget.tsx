@@ -26,21 +26,23 @@ export default function SelectWidget(
         aria-invalid={(props.rawErrors?.length ?? 0) > 0}
         className="w-45"
       >
-        <SelectValue placeholder={props.placeholder} />
+        <SelectValue
+          placeholder={
+            options?.length === 0 ? "Join a sub to post" : props.placeholder
+          }
+        />
       </SelectTrigger>
-      <SelectContent>
-        {!options ||
-          (options.length === 0 && (
-            <SelectItem value="">Join a subreddit to post</SelectItem>
+      {(options?.length ?? 0) > 0 && (
+        <SelectContent>
+          {options?.map(({ value, label }) => (
+            <SelectItem key={value} value={value}>
+              {props.name === "sub"
+                ? props.registry.formContext.get(parseInt(label, 10))
+                : label}
+            </SelectItem>
           ))}
-        {options?.map(({ value, label }) => (
-          <SelectItem key={value} value={value}>
-            {props.name === "sub"
-              ? props.registry.formContext.get(parseInt(label, 10))
-              : label}
-          </SelectItem>
-        ))}
-      </SelectContent>
+        </SelectContent>
+      )}
     </Select>
   );
 }

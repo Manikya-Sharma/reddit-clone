@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Routes } from "@/client/routes";
 
 export default function SearchBar() {
   return (
@@ -17,7 +18,7 @@ export default function SearchBar() {
         className="w-px h-4/5 my-auto bg-neutral-600 text-red-600"
       ></div>
       <Link
-        href="/answers"
+        href={Routes.NONE}
         className="flex items-center gap-2 shrink-0 px-2 ml-1 mr-0.5 rounded-full hover:bg-neutral-700 transition-colors"
       >
         <Image src="/icons/ask-icon.svg" width={16} height={16} alt="" />

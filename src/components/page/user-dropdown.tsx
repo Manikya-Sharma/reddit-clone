@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import ProfilePic from "./profile-pic";
+import { Routes } from "@/client/routes";
 
 export default function UserDropdown({
   user,
@@ -34,7 +35,7 @@ export default function UserDropdown({
         <DropdownMenuGroup>
           <DropdownMenuLabel>
             <a
-              href={`/user/${user.username}`}
+              href={Routes.USER({ username: user.username ?? "" })}
               className="flex items-center gap-2"
             >
               <ProfilePic firstChar={user.username?.[0] ?? ""} />

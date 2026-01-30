@@ -9,6 +9,7 @@ import { useGetUser } from "@/app/hooks/useGetUser";
 import { useJoinSub } from "@/app/hooks/useJoinSub";
 import { useLeaveSub } from "@/app/hooks/useLeaveSub";
 import Indeterminate from "./indeterminate";
+import { Routes } from "@/client/routes";
 
 export default function SubSide({ subTitle }: { subTitle: string | null }) {
   const { data: subResult, isLoading: isLoadingSub } = useGetSub({
@@ -57,7 +58,7 @@ export default function SubSide({ subTitle }: { subTitle: string | null }) {
       </div>
       <div className="flex gap-2 text-xs">
         <a
-          href={`/submit?from=${sub?.id}`}
+          href={Routes.NEW_POST}
           className="flex items-center gap-2 px-3 py-2 rounded-full bg-neutral-800 hover:bg-neutral-700"
         >
           <Image src="/icons/plus-icon.svg" width={16} height={16} alt="" />

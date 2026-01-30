@@ -9,6 +9,7 @@ import { useLeaveSub } from "@/app/hooks/useLeaveSub";
 import type { subs } from "@/database/drizzle/schema";
 import { Skeleton } from "../ui/skeleton";
 import WithTooltip from "./with-tooltip";
+import { Routes } from "@/client/routes";
 
 export default function CommunityList() {
   const { data: user, isLoading: isLoadingUser } = useGetUser();
@@ -67,7 +68,10 @@ function Row({
 }) {
   return (
     <li key={sub.id} className="flex">
-      <a href={`/r/${sub.title}`} className="flex gap-2 group">
+      <a
+        href={Routes.SUBREDDIT({ subTitle: sub.title ?? "" })}
+        className="flex gap-2 group"
+      >
         <Image src="/icons/outline-logo.svg" width={20} height={20} alt="" />
         <div className="flex flex-col gap-0.5">
           <span className="text-sm group-hover:text-blue-400">{sub.title}</span>
@@ -105,7 +109,7 @@ function Row({
 function LoadingSkeleton() {
   return (
     <li className="flex">
-      <a href="/" className="flex gap-2 group">
+      <a href={Routes.HOMEPAGE} className="flex gap-2 group">
         <Skeleton className="size-5 rounded-full"></Skeleton>
         <div className="flex flex-col gap-0.5">
           <span className="text-sm group-hover:text-blue-400">

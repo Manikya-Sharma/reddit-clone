@@ -5,6 +5,7 @@ import { useGetUserDetailsById } from "@/app/hooks/useGetUserDetailsById";
 import Indeterminate from "./indeterminate";
 import ProfilePic from "./profile-pic";
 import VotesSectionComment from "./votes-section-comment";
+import { Routes } from "@/client/routes";
 
 export default function Comments({
   comments,
@@ -42,7 +43,7 @@ function Comment({
       <div className="absolute top-4 bottom-4 w-px bg-neutral-600 -left-2"></div>
       <div className="absolute bottom-4 w-1 h-3 border-3 border-transparent border-b-neutral-600 -left-[0.67rem]"></div>
       <a
-        href={`/user/${author?.username}`}
+        href={Routes.USER({ username: author?.username ?? "" })}
         className="flex gap-1 cursor-pointer hover:text-green-400"
       >
         <ProfilePic firstChar={author?.username?.[0] ?? ""} />

@@ -11,6 +11,7 @@ import ProfilePic from "./profile-pic";
 import SignupCard from "./sign-up-card";
 import UserDropdown from "./user-dropdown";
 import WithTooltip from "./with-tooltip";
+import { Routes } from "@/client/routes";
 
 export default function NavOptions() {
   const { data: user, isLoading } = useGetUser();
@@ -42,7 +43,7 @@ export default function NavOptions() {
             <Image src="/icons/chat-icon.svg" width={20} height={20} alt="" />
           </NavButton>
           <NavButton tooltipText="Create post" disabled={isLoading}>
-            <a href="/submit" className="flex gap-2">
+            <a href={Routes.NEW_POST} className="flex gap-2">
               <Image src="/icons/chat-icon.svg" width={20} height={20} alt="" />
               <span className="text-sm">Create</span>
             </a>

@@ -9,6 +9,7 @@ import type { posts } from "@/database/drizzle/schema";
 import { client } from "@/server/client";
 import VotesSection from "./votes-section";
 import Indeterminate from "./indeterminate";
+import { Routes } from "@/client/routes";
 
 export function ShowFeed({
   postIds,
@@ -88,7 +89,7 @@ function Post({
     <div className="block p-2 pb-2 mb-3 rounded-md hover:bg-neutral-800">
       <div>
         <a
-          href={`/r/${sub?.sub.title}`}
+          href={Routes.SUBREDDIT({ subTitle: sub?.sub.title ?? "" })}
           className="text-xs flex gap-2 hover:text-blue-300"
         >
           <Image src="/icons/outline-logo.svg" width={12} height={12} alt="" />
@@ -105,13 +106,19 @@ function Post({
           </span>
         </a>
         <a
-          href={`/r/${sub?.sub.title}/comments/${post?.id}`}
+          href={Routes.COMMENTS({
+            subTitle: sub?.sub.title ?? "",
+            postId: post?.id ?? "",
+          })}
           className="block text-3xl"
         >
           {post?.title}
         </a>
         <a
-          href={`/r/${sub?.sub.title}/comments/${post?.id}`}
+          href={Routes.COMMENTS({
+            subTitle: sub?.sub.title ?? "",
+            postId: post?.id ?? "",
+          })}
           className="block mt-5 text-ellipsis max-w-full overflow-hidden"
         >
           {post?.content}

@@ -6,6 +6,7 @@ import { useGetUser } from "@/app/hooks/useGetUser";
 import type { subs } from "@/database/drizzle/schema";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { Routes } from "@/client/routes";
 
 export default function Aside({
   expanded,
@@ -49,35 +50,35 @@ export default function Aside({
               {
                 text: "Home",
                 icon: "/icons/home-icon.svg",
-                href: "/",
+                href: Routes.HOMEPAGE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Popular",
                 icon: "/icons/pop-icon.svg",
-                href: "/r/popular",
+                href: Routes.POPULAR,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Explore",
                 icon: "/icons/explore-icon.svg",
-                href: "/explore",
+                href: Routes.EXPLORE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "All",
                 icon: "/icons/all-icon.svg",
-                href: "/r/all",
+                href: Routes.ALL,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Start a community",
                 icon: "/icons/plus-icon.svg",
-                href: "/new-com",
+                href: Routes.NEW_COMMUNITY,
                 width: 20,
                 height: 20,
               },
@@ -90,28 +91,28 @@ export default function Aside({
               {
                 text: "Riddonkulous",
                 icon: "/riddonkulous.webp",
-                href: "#",
+                href: Routes.NONE,
                 width: 24,
                 height: 24,
               },
               {
                 text: "Hexaword",
                 icon: "/hexaword.webp",
-                href: "#",
+                href: Routes.NONE,
                 width: 24,
                 height: 24,
               },
               {
                 text: "Chess Quiz Plus",
                 icon: "/crown.webp",
-                href: "#",
+                href: Routes.NONE,
                 width: 24,
                 height: 24,
               },
               {
                 text: "Discover More Games",
                 icon: "/icons/games-icon.svg",
-                href: "#",
+                href: Routes.NONE,
                 width: 24,
                 height: 24,
               },
@@ -123,7 +124,7 @@ export default function Aside({
             items={[
               {
                 icon: "/icons/cogwheel-icon.svg",
-                href: "/communities",
+                href: Routes.COMMUNITIES,
                 text: "Manage Communities",
                 width: 20,
                 height: 20,
@@ -132,7 +133,7 @@ export default function Aside({
                 ? [
                     {
                       icon: "/icons/outline-logo.svg",
-                      href: `$`,
+                      href: Routes.NONE,
                       text: "Loading...",
                       key: 1,
                       width: 20,
@@ -140,7 +141,7 @@ export default function Aside({
                     },
                     {
                       icon: "/icons/outline-logo.svg",
-                      href: `$`,
+                      href: Routes.NONE,
                       text: "Loading...",
                       key: 2,
                       width: 20,
@@ -148,7 +149,7 @@ export default function Aside({
                     },
                     {
                       icon: "/icons/outline-logo.svg",
-                      href: `$`,
+                      href: Routes.NONE,
                       text: "Loading...",
                       key: 3,
                       width: 20,
@@ -162,7 +163,7 @@ export default function Aside({
                     )
                     .map(({ sub }) => ({
                       icon: "/icons/outline-logo.svg",
-                      href: `/r/${sub.title}`,
+                      href: Routes.SUBREDDIT({ subTitle: sub.title ?? "" }),
                       text: sub.title ?? "",
                       width: 20,
                       height: 20,
@@ -176,56 +177,56 @@ export default function Aside({
               {
                 text: "About Reddit",
                 icon: "/icons/outline-logo.svg",
-                href: "/about",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Advertise",
                 icon: "/icons/advertise.svg",
-                href: "#",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Developer Platform",
                 icon: "/icons/dev-icon.svg",
-                href: "/explore",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Reddit Pro",
                 icon: "/icons/pro-icon.svg",
-                href: "#",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Help",
                 icon: "/icons/help-icon.svg",
-                href: "#",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Blog",
                 icon: "/icons/blog-icon.svg",
-                href: "#",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Careers",
                 icon: "/icons/careers.svg",
-                href: "#",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },
               {
                 text: "Press",
                 icon: "/icons/press-icon.svg",
-                href: "#",
+                href: Routes.NONE,
                 width: 20,
                 height: 20,
               },

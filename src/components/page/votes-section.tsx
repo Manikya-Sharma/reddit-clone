@@ -15,6 +15,7 @@ import {
 } from "../ui/dialog";
 import Indeterminate from "./indeterminate";
 import ReplyForm from "./reply-form";
+import { Routes } from "@/client/routes";
 
 export default function VotesSection({
   postId,
@@ -139,7 +140,10 @@ export default function VotesSection({
           </Dialog>
         ) : (
           <a
-            href={`/r/${sub?.sub.title}/comments/${post?.id}`}
+            href={Routes.COMMENTS({
+              subTitle: sub?.sub.title ?? "",
+              postId: post?.id ?? "",
+            })}
             className="rounded-full flex gap-2 items-center text-sm bg-neutral-700 px-4 hover:bg-neutral-600"
           >
             <Image
