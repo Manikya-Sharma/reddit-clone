@@ -32,7 +32,7 @@ export default async function Page({ params }: PageProps<"/r/[subTitle]">) {
         </div>
         <ShowFeed postIds={sub[0].posts} withEdit={true} />
       </div>
-      <SubSide sub={sub[0]} />
+      <SubSide subTitle={sub[0].title} />
     </div>
   );
 }

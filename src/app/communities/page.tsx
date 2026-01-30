@@ -7,15 +7,7 @@ export default async function Page() {
     <div className="flex justify-between">
       <div className="flex-1 flex flex-col gap-5 px-7 py-5 w-full max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold">Manage Communities</h1>
-        <Field orientation="horizontal">
-          <Input type="search" placeholder="Search..." />
-          <button
-            type="button"
-            className="px-4 py-2 rounded-md bg-white text-black text-sm cursor-pointer"
-          >
-            Filter
-          </button>
-        </Field>
+        <SearchField />
         <CommunityList />
       </div>
       <div className="flex flex-col gap-2 mt-16 px-6 py-2 w-full max-w-lg">
@@ -23,5 +15,19 @@ export default async function Page() {
         <div className="p-4 rounded-md hover:bg-neutral-800">Favourites</div>
       </div>
     </div>
+  );
+}
+
+function SearchField() {
+  return (
+    <Field orientation="horizontal">
+      <Input type="search" placeholder="Search..." />
+      <button
+        type="button"
+        className="px-4 py-2 rounded-md bg-white text-black text-sm cursor-pointer"
+      >
+        Filter
+      </button>
+    </Field>
   );
 }

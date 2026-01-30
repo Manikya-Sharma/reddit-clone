@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import ProfilePic from "./ProfilePic";
+import ProfilePic from "./profile-pic";
 
 export default function UserDropdown({
   user,

@@ -3,17 +3,18 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { format, parse } from "date-fns";
 import Image from "next/image";
+import { useGetSub } from "@/app/hooks/useGetSub";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import { useJoinSub } from "@/app/hooks/useJoinSub";
 import { useLeaveSub } from "@/app/hooks/useLeaveSub";
-import type { subs } from "@/database/drizzle/schema";
 
-export default function SubSide({
-  sub,
-}: {
-  sub: typeof subs.$inferSelect | undefined;
-}) {
+export default function SubSide({ subTitle }: { subTitle: string | null }) {
+  const { data: subResult, isLoading: isLoadingSub } = useGetSub({
+    title: subTitle,
+  });
+  const sub = subResult?.sub;
+
   const queryClient = useQueryClient();
 
   const { mutate: leaveSub, isPending: isLeavingSub } = useLeaveSub({

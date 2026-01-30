@@ -2,7 +2,7 @@
 
 import { useGetCommentById } from "@/app/hooks/useGetCommentById";
 import { useGetUserDetailsById } from "@/app/hooks/useGetUserDetailsById";
-import ProfilePic from "./ProfilePic";
+import ProfilePic from "./profile-pic";
 import VotesSectionComment from "./votes-section-comment";
 
 export default function Comments({

@@ -29,3 +29,14 @@ export async function getUser() {
   }
   return { user: usersResult[0] };
 }
+
+export async function getUserByUsername({ username }: { username: string }) {
+  const usersResult = await db
+    .select()
+    .from(users)
+    .where(eq(users.username, username));
+  if (!usersResult || usersResult.length === 0) {
+    return null;
+  }
+  return usersResult[0];
+}

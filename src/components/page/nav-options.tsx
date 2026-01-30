@@ -7,7 +7,7 @@ import { useGetUser } from "@/app/hooks/useGetUser";
 import { cn } from "@/lib/utils";
 import LoginCard from "./login-card";
 import Modal from "./modal";
-import ProfilePic from "./ProfilePic";
+import ProfilePic from "./profile-pic";
 import SignupCard from "./sign-up-card";
 import UserDropdown from "./user-dropdown";
 import WithTooltip from "./with-tooltip";

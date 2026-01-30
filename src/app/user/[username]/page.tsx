@@ -1,14 +1,11 @@
-"use client";
-
 import { formatDistance, parse } from "date-fns";
 import Image from "next/image";
-import React from "react";
-import { useGetUserDetails } from "@/app/hooks/useGetUserDetails";
 import { ShowFeed } from "@/components/page/show-feed";
+import { getUserByUsername } from "@/lib/server-actions";
 
-export default function Page({ params }: PageProps<"/user/[username]">) {
-  const { username } = React.use(params);
-  const { data: user } = useGetUserDetails({ username });
+export default async function Page({ params }: PageProps<"/user/[username]">) {
+  const { username } = await params;
+  const user = await getUserByUsername({ username });
   return (
     <div className="flex-1 relative">
       <div className="flex flex-col gap-3 max-w-6xl mx-auto px-7 py-10">
