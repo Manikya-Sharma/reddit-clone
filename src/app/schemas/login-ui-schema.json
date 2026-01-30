@@ -13,8 +13,7 @@
   },
   "ui:submitButtonOptions": {
     "props": {
-      "disabled": false,
-      "className": "text-center py-3 w-full rounded-full cursor-pointer disabled:bg-neutral-700 bg-red-600 hover:bg-red-800 transition-colors"
+      "disabled": false
     },
     "norender": false,
     "submitText": "Login"

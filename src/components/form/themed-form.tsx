@@ -3,6 +3,7 @@ import DescriptionFieldTemplate from "./templates/DescriptionFieldTemplate";
 import ErrorListTemplate from "./templates/ErrorListTemplate";
 import FieldErrorTemplate from "./templates/FieldErrorTemplate";
 import FieldTemplate from "./templates/FieldTemplate";
+import SubmitButton from "./templates/SubmitButtonTemplate";
 import TitleFieldTemplate from "./templates/TitleFieldTemplate";
 import EmailWidget from "./widgets/email-widget";
 import PasswordWidget from "./widgets/password-widget";
@@ -24,6 +25,9 @@ const theme: ThemeProps = {
     FieldErrorTemplate,
     ErrorListTemplate,
     FieldTemplate,
+    ButtonTemplates: {
+      SubmitButton,
+    },
   },
 };
 
