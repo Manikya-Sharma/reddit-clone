@@ -2,6 +2,7 @@
 
 import type { RJSFSchema } from "@rjsf/utils";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
 import { useGetUser } from "@/app/hooks/useGetUser";
@@ -9,7 +10,6 @@ import schema from "@/app/schemas/new-post-schema.json";
 import uiSchema from "@/app/schemas/new-post-ui-schema.json";
 import { DefaultForm } from "@/components/form/default-form";
 import { client } from "@/server/client";
-import { useRouter } from "next/navigation";
 
 type FormData = {
   title: string;

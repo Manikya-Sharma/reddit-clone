@@ -1,7 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import type { posts } from "@/database/drizzle/schema";
 import { client } from "@/server/client";
 
-export function useGetPostById(postId: number | undefined) {
+export function useGetPostById({
+  postId,
+  initialData,
+}: {
+  postId: number | undefined;
+  initialData?: typeof posts.$inferSelect;
+}) {
   return useQuery({
     queryKey: ["get-post", postId],
     queryFn: async () => {
@@ -16,5 +23,6 @@ export function useGetPostById(postId: number | undefined) {
       }
       return await postsResults.json();
     },
+    initialData,
   });
 }

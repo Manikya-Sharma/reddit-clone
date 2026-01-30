@@ -6,20 +6,30 @@ import { useGetSub } from "@/app/hooks/useGetSub";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import Comments from "@/components/page/comments";
 import VotesSection from "@/components/page/votes-section";
+import type { posts, subs } from "@/database/drizzle/schema";
 import BackButton from "./back-button";
 
 export function WithComments({
   subTitle,
   postId,
+  initialData,
 }: {
   subTitle: string;
   postId: number;
+  initialData?: {
+    sub: typeof subs.$inferSelect;
+    post: typeof posts.$inferSelect;
+  };
 }) {
-  const { data: subRes, isLoading: isSubLoading } = useGetSub({
+  const { data: sub, isLoading: isSubLoading } = useGetSub({
     title: subTitle,
+    initialData: initialData?.sub,
   });
-  const { data: post, isLoading: isPostLoading } = useGetPostById(postId);
-  const sub = subRes?.sub;
+
+  const { data: post, isLoading: isPostLoading } = useGetPostById({
+    postId,
+    initialData: initialData?.post,
+  });
 
   const { data: user, isLoading: isUserLoading } = useGetUser();
 

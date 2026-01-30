@@ -1,11 +1,25 @@
 import { formatDistance, parse } from "date-fns";
+import { eq } from "drizzle-orm";
 import Image from "next/image";
 import { ShowFeed } from "@/components/page/show-feed";
+import { db } from "@/database/drizzle/db";
+import { posts } from "@/database/drizzle/schema";
 import { getUserByUsername } from "@/lib/server-actions";
 
 export default async function Page({ params }: PageProps<"/user/[username]">) {
   const { username } = await params;
   const user = await getUserByUsername({ username });
+
+  const userPosts = await Promise.all(
+    user?.posts?.map(async (postId) => {
+      const res = await db.select().from(posts).where(eq(posts.id, postId));
+      if (!res) {
+        throw new Error("post not found");
+      }
+      return res[0];
+    }) ?? [],
+  );
+
   return (
     <div className="flex-1 relative">
       <div className="flex flex-col gap-3 max-w-6xl mx-auto px-7 py-10">
@@ -18,7 +32,11 @@ export default async function Page({ params }: PageProps<"/user/[username]">) {
             <span className="text-lg">u/{user?.username}</span>
           </div>
         </div>
-        <ShowFeed withEdit={true} postIds={user?.posts} />
+        <ShowFeed
+          initialData={userPosts}
+          withEdit={true}
+          postIds={user?.posts}
+        />
       </div>
       <div className="fixed top-16 right-2 bg-neutral-700 p-4 rounded-md flex flex-col gap-3 w-68">
         <div className="flex justify-between items-center text-lg">

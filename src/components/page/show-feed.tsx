@@ -13,13 +13,15 @@ export function ShowFeed({
   postIds,
   isLoading: isLoadingMeta,
   withEdit,
+  initialData,
 }: {
   postIds: Array<number> | null | undefined;
   isLoading?: boolean;
   withEdit?: boolean;
+  initialData?: Array<typeof posts.$inferSelect>;
 }) {
   const postsResults = useQueries({
-    queries: (postIds ?? []).map((postId) => ({
+    queries: (postIds ?? []).map((postId, index) => ({
       queryKey: ["get-post", postId],
       queryFn: async () => {
         const postsResults = await client.api.v1.posts["get-post"].$post({
@@ -30,6 +32,7 @@ export function ShowFeed({
         }
         return await postsResults.json();
       },
+      initialData: initialData?.[index],
     })),
   });
 

@@ -27,7 +27,7 @@ export default function VotesSection({
   const { data: user, isLoading: isLoadingUser } = useGetUser();
   const queryClient = useQueryClient();
 
-  const { data: post } = useGetPostById(postId);
+  const { data: post } = useGetPostById({ postId });
 
   const { data: sub, isLoading: isLoadingSub } = useGetSubById({
     id: post?.sub,

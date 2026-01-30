@@ -13,7 +13,7 @@ export default function SubSide({ subTitle }: { subTitle: string | null }) {
   const { data: subResult, isLoading: isLoadingSub } = useGetSub({
     title: subTitle,
   });
-  const sub = subResult?.sub;
+  const sub = subResult;
 
   const queryClient = useQueryClient();
 
