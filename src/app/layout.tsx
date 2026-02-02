@@ -4,6 +4,7 @@ import "./globals.css";
 import MainWithAside from "@/components/page/main-with-aside";
 import Navbar from "@/components/page/navbar";
 import { ReactQueryProvider } from "@/providers/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <ReactQueryProvider>
           <Navbar />
+          <Toaster richColors={true} position="top-center" />
           <MainWithAside>{children}</MainWithAside>
         </ReactQueryProvider>
       </body>

@@ -16,6 +16,7 @@ import {
 import Indeterminate from "./indeterminate";
 import ReplyForm from "./reply-form";
 import { Routes } from "@/client/routes";
+import { toast } from "sonner";
 
 export default function VotesSection({
   postId,
@@ -38,7 +39,10 @@ export default function VotesSection({
   const isLoading = isLoadingUser || isLoadingSub;
 
   const upvote = async () => {
-    if (!post?.id || !user?.id) return;
+    if (!post?.id || !user?.id) {
+      toast.error("You need to login to cast votes");
+      return;
+    }
     await client.api.v1.posts.upvote.$post({
       json: { postId: post.id, userId: user.id },
     });
@@ -46,7 +50,10 @@ export default function VotesSection({
   };
 
   const downvote = async () => {
-    if (!post?.id || !user?.id) return;
+    if (!post?.id || !user?.id) {
+      toast.error("You need to login to cast votes");
+      return;
+    }
     await client.api.v1.posts.downvote.$post({
       json: { postId: post.id, userId: user.id },
     });
@@ -122,7 +129,14 @@ export default function VotesSection({
       {withEdit ? (
         canComment ? (
           <Dialog>
-            <DialogTrigger>
+            <DialogTrigger
+              onClick={() => {
+                if (!user) {
+                  toast.error("You need to login to comment");
+                  throw new Error("unauthorized");
+                }
+              }}
+            >
               <div className="rounded-full flex gap-2 items-center text-sm bg-neutral-700 px-4 hover:bg-neutral-600 py-3">
                 <Image
                   src="/icons/comments-icon.svg"

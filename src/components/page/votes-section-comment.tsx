@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import ReplyForm from "./reply-form";
+import { toast } from "sonner";
 
 export default function VotesSectionComment({
   commentId,
@@ -27,7 +28,10 @@ export default function VotesSectionComment({
   const isLoading = isLoadingUser;
 
   const upvote = async () => {
-    if (!comment?.id || !user?.id) return;
+    if (!comment?.id || !user?.id) {
+      toast.error("You need to login to cast votes");
+      return;
+    }
     await client.api.v1.comments.upvote.$post({
       json: { commentId: comment.id, userId: user.id },
     });
@@ -35,7 +39,10 @@ export default function VotesSectionComment({
   };
 
   const downvote = async () => {
-    if (!comment?.id || !user?.id) return;
+    if (!comment?.id || !user?.id) {
+      toast.error("You need to login to cast votes");
+      return;
+    }
     await client.api.v1.comments.downvote.$post({
       json: { commentId: comment.id, userId: user.id },
     });
@@ -101,6 +108,12 @@ export default function VotesSectionComment({
           <button
             type="button"
             className="flex gap-1 px-2 py-1 rounded-full text-xs items-center cursor-pointer hover:bg-neutral-800"
+            onClick={() => {
+              if (!user) {
+                toast.error("You need to login to comment");
+                throw new Error("unauthorized");
+              }
+            }}
           >
             <Image src="/icons/reply-icon.svg" width={12} height={12} alt="" />
             <span>Reply</span>

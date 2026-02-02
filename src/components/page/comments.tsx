@@ -6,9 +6,9 @@ import { useGetCommentById } from "@/app/hooks/useGetCommentById";
 import { useGetUserDetailsById } from "@/app/hooks/useGetUserDetailsById";
 import { Routes } from "@/client/routes";
 import { cn } from "@/lib/utils";
-import Indeterminate from "./indeterminate";
 import ProfilePic from "./profile-pic";
 import VotesSectionComment from "./votes-section-comment";
+import { Loader2 } from "lucide-react";
 
 export default function Comments({
   comments,
@@ -54,9 +54,12 @@ function Comment({
 
   const hovered = isHover || isParentHover;
 
+  if (isLoading) {
+    return <Loader2 className="size-4 animate-spin m-5" />;
+  }
+
   return (
     <div className="relative flex flex-col gap-2">
-      <Indeterminate isLoading={isLoading} />
       {collapsed ? (
         <button
           className="flex items-center gap-3 my-2"

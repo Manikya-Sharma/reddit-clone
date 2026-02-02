@@ -10,6 +10,8 @@ import { useJoinSub } from "@/app/hooks/useJoinSub";
 import { useLeaveSub } from "@/app/hooks/useLeaveSub";
 import Indeterminate from "./indeterminate";
 import { Routes } from "@/client/routes";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export default function SubSide({ subTitle }: { subTitle: string | null }) {
   const { data: subResult, isLoading: isLoadingSub } = useGetSub({
@@ -42,7 +44,9 @@ export default function SubSide({ subTitle }: { subTitle: string | null }) {
   const userId = user?.id;
 
   const handleSubJoin = () => {
-    if (isModifyingSub || !userId) return;
+    if (isModifyingSub || !userId) {
+      toast.error("You need to be logged in to join a sub");
+    }
     if (isJoinedSub) {
       leaveSub({ userId, subId: sub?.id });
     } else {
@@ -60,6 +64,12 @@ export default function SubSide({ subTitle }: { subTitle: string | null }) {
         <a
           href={Routes.NEW_POST}
           className="flex items-center gap-2 px-3 py-2 rounded-full bg-neutral-800 hover:bg-neutral-700"
+          onClick={(e) => {
+            if (!userId) {
+              toast.error("You need to login to post");
+              e.preventDefault();
+            }
+          }}
         >
           <Image src="/icons/plus-icon.svg" width={16} height={16} alt="" />
           Create Post

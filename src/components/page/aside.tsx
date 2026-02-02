@@ -7,6 +7,7 @@ import type { subs } from "@/database/drizzle/schema";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Routes } from "@/client/routes";
+import { toast } from "sonner";
 
 export default function Aside({
   expanded,
@@ -81,6 +82,7 @@ export default function Aside({
                 href: Routes.NEW_COMMUNITY,
                 width: 20,
                 height: 20,
+                enabled: user !== undefined,
               },
             ]}
           />
@@ -128,6 +130,7 @@ export default function Aside({
                 text: "Manage Communities",
                 width: 20,
                 height: 20,
+                enabled: user !== undefined,
               },
               ...(isLoadingSubs
                 ? [
@@ -249,6 +252,7 @@ function Section({
     width: number;
     height: number;
     key?: number;
+    enabled?: boolean;
   }[];
   collapseTitle?: string;
 }) {
@@ -283,6 +287,12 @@ function Section({
               "flex gap-2 items-center py-3 px-4 rounded-lg hover:bg-neutral-900",
               item.href === pathName && "bg-neutral-800",
             )}
+            onClick={(e) => {
+              if (item.enabled === undefined ? false : item.enabled) {
+                toast.error("You are not allowed to access this page");
+                e.preventDefault();
+              }
+            }}
           >
             <Image
               src={item.icon}
