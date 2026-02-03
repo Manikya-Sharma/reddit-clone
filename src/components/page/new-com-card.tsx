@@ -16,7 +16,7 @@ type FormData = {
   status: "public" | "private";
 };
 
-export default function NewComCard() {
+const NewComCard = () => {
   const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
@@ -71,4 +71,6 @@ export default function NewComCard() {
       </div>
     </div>
   );
-}
+};
+
+export default NewComCard;

@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import React, { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
 import { useGetUser } from "@/app/hooks/useGetUser";
+import { Routes } from "@/client/routes";
 import type { subs } from "@/database/drizzle/schema";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
-import { Routes } from "@/client/routes";
-import { toast } from "sonner";
 
 export default function Aside({
   expanded,
@@ -18,8 +18,14 @@ export default function Aside({
 }) {
   const { data: user } = useGetUser();
   const subsResult = useGetSubs(user?.subs);
-  const userSubs = subsResult.map((res) => res.data);
-  const isLoadingSubs = subsResult.some((res) => res.isLoading);
+  const userSubs = useMemo(
+    () => subsResult.map((res) => res.data),
+    [subsResult],
+  );
+  const isLoadingSubs = useMemo(
+    () => subsResult.some((res) => res.isLoading),
+    [subsResult],
+  );
 
   return (
     <>
@@ -241,75 +247,82 @@ export default function Aside({
   );
 }
 
-function Section({
-  items,
-  collapseTitle,
-}: {
-  items: {
-    href: string;
-    icon: string;
-    text: string;
-    width: number;
-    height: number;
-    key?: number;
-    enabled?: boolean;
-  }[];
-  collapseTitle?: string;
-}) {
-  const pathName = usePathname();
+const Section = React.memo(
+  ({
+    items,
+    collapseTitle,
+  }: {
+    items: {
+      href: string;
+      icon: string;
+      text: string;
+      width: number;
+      height: number;
+      key?: number;
+      enabled?: boolean;
+    }[];
+    collapseTitle?: string;
+  }) => {
+    const pathName = usePathname();
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  return (
-    <div>
-      {collapseTitle && (
-        <button
-          type="button"
-          className="flex justify-between items-center py-3 px-2 cursor-pointer w-full rounded-lg hover:bg-neutral-900"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <span className="uppercase text-muted-foreground text-sm">
-            {collapseTitle}
-          </span>
-          <Image src="/icons/dropdown-icon.svg" alt="" width={20} height={20} />
-        </button>
-      )}
-      <div
-        className={cn(
-          "transition-opacity",
-          isCollapsed && "opacity-0 h-0 overflow-hidden",
-        )}
-      >
-        {items?.map((item) => (
-          <a
-            key={item.key ?? item.text}
-            href={item.href}
-            className={cn(
-              "flex gap-2 items-center py-3 px-4 rounded-lg hover:bg-neutral-900",
-              item.href === pathName && "bg-neutral-800",
-            )}
-            onClick={(e) => {
-              if (item.enabled === undefined ? false : !item.enabled) {
-                toast.error("You are not allowed to access this page");
-                e.preventDefault();
-              }
-            }}
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    return (
+      <div>
+        {collapseTitle && (
+          <button
+            type="button"
+            className="flex justify-between items-center py-3 px-2 cursor-pointer w-full rounded-lg hover:bg-neutral-900"
+            onClick={() => setIsCollapsed(!isCollapsed)}
           >
-            <Image
-              src={item.icon}
-              alt=""
-              width={item.width}
-              height={item.height}
-              className="shrink-0"
-            />
-            <span className="text-neutral-300 text-sm line-clamp-1 text-ellipsis">
-              {item.text}
+            <span className="uppercase text-muted-foreground text-sm">
+              {collapseTitle}
             </span>
-          </a>
-        ))}
+            <Image
+              src="/icons/dropdown-icon.svg"
+              alt=""
+              width={20}
+              height={20}
+            />
+          </button>
+        )}
+        <div
+          className={cn(
+            "transition-opacity",
+            isCollapsed && "opacity-0 h-0 overflow-hidden",
+          )}
+        >
+          {items?.map((item) => (
+            <a
+              key={item.key ?? item.text}
+              href={item.href}
+              className={cn(
+                "flex gap-2 items-center py-3 px-4 rounded-lg hover:bg-neutral-900",
+                item.href === pathName && "bg-neutral-800",
+              )}
+              onClick={(e) => {
+                if (item.enabled === undefined ? false : !item.enabled) {
+                  toast.error("You are not allowed to access this page");
+                  e.preventDefault();
+                }
+              }}
+            >
+              <Image
+                src={item.icon}
+                alt=""
+                width={item.width}
+                height={item.height}
+                className="shrink-0"
+              />
+              <span className="text-neutral-300 text-sm line-clamp-1 text-ellipsis">
+                {item.text}
+              </span>
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  },
+);
 
 function Separator() {
   return <div className="w-full bg-neutral-800 h-px my-4"></div>;

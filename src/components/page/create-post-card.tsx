@@ -3,7 +3,7 @@
 import type { RJSFSchema } from "@rjsf/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import schema from "@/app/schemas/new-post-schema.json";
@@ -18,27 +18,32 @@ type FormData = {
   sub: string | undefined;
 };
 
-export default function NewPostCard() {
+const NewPostCard = React.memo(() => {
   const [formData, setFormData] = useState<FormData>();
 
   const { data: user, isLoading } = useGetUser();
   const subResult = useGetSubs(user?.subs);
-  const userSubs = subResult.map((sub) => sub.data);
-  const isLoadingUserSubs = subResult.some((sub) => sub.isLoading);
+  const userSubs = useMemo(() => subResult.map((sub) => sub.data), [subResult]);
+  const isLoadingUserSubs = useMemo(
+    () => subResult.some((sub) => sub.isLoading),
+    [subResult],
+  );
 
-  const newSchema = {
-    ...schema,
-    properties: {
-      ...schema.properties,
-      sub: {
-        enum: userSubs.map((sub) => String(sub?.sub.id)),
-      },
-    },
-  } as RJSFSchema;
+  const newSchema = useMemo(
+    () =>
+      ({
+        ...schema,
+        properties: {
+          ...schema.properties,
+          sub: {
+            enum: userSubs.map((sub) => String(sub?.sub.id)),
+          },
+        },
+      }) as RJSFSchema,
+    [userSubs],
+  );
 
-  const newUiSchema = {
-    ...uiSchema,
-  };
+  const newUiSchema = uiSchema;
 
   const router = useRouter();
 
@@ -95,4 +100,6 @@ export default function NewPostCard() {
       </div>
     </div>
   );
-}
+});
+
+export default NewPostCard;

@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useGetLogout } from "@/app/hooks/useGetLogout";
 import { useGetUser } from "@/app/hooks/useGetUser";
+import { Routes } from "@/client/routes";
 import { cn } from "@/lib/utils";
 import LoginCard from "./login-card";
 import Modal from "./modal";
@@ -11,9 +12,8 @@ import ProfilePic from "./profile-pic";
 import SignupCard from "./sign-up-card";
 import UserDropdown from "./user-dropdown";
 import WithTooltip from "./with-tooltip";
-import { Routes } from "@/client/routes";
 
-export default function NavOptions() {
+const NavOptions = React.memo(() => {
   const { data: user, isLoading } = useGetUser();
   const [showModal, setShowModal] = useState<"none" | "login" | "signup">(
     "none",
@@ -94,31 +94,35 @@ export default function NavOptions() {
       )}
     </div>
   );
-}
+});
 
-function NavButton({
-  children,
-  tooltipText,
-  disabled,
-  className,
-}: {
-  children: React.ReactNode;
-  tooltipText: string;
-  disabled?: boolean;
-  className?: string;
-}) {
-  return (
-    <WithTooltip tooltipText={tooltipText}>
-      <div
-        className={cn(
-          "px-3 py-2.5 hover:bg-neutral-700 rounded-full transition-colors cursor-pointer relative",
-          disabled &&
-            "before:block before:absolute before:inset-0 before:rounded-full before:bg-black/30 z-10 hover:cursor-auto hover:bg-inherit",
-          className,
-        )}
-      >
-        {children}
-      </div>
-    </WithTooltip>
-  );
-}
+const NavButton = React.memo(
+  ({
+    children,
+    tooltipText,
+    disabled,
+    className,
+  }: {
+    children: React.ReactNode;
+    tooltipText: string;
+    disabled?: boolean;
+    className?: string;
+  }) => {
+    return (
+      <WithTooltip tooltipText={tooltipText}>
+        <div
+          className={cn(
+            "px-3 py-2.5 hover:bg-neutral-700 rounded-full transition-colors cursor-pointer relative",
+            disabled &&
+              "before:block before:absolute before:inset-0 before:rounded-full before:bg-black/30 z-10 hover:cursor-auto hover:bg-inherit",
+            className,
+          )}
+        >
+          {children}
+        </div>
+      </WithTooltip>
+    );
+  },
+);
+
+export default NavOptions;

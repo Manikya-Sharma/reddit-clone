@@ -3,10 +3,11 @@
 import { and, eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { notFound, unauthorized } from "next/navigation";
+import { cache } from "react";
 import { db } from "@/database/drizzle/db";
 import { sessions, users } from "@/database/drizzle/schema";
 
-export async function getUser() {
+export const getUser = cache(async () => {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("user");
   if (!sessionCookie) {
@@ -28,15 +29,17 @@ export async function getUser() {
     notFound();
   }
   return { user: usersResult[0] };
-}
+});
 
-export async function getUserByUsername({ username }: { username: string }) {
-  const usersResult = await db
-    .select()
-    .from(users)
-    .where(eq(users.username, username));
-  if (!usersResult || usersResult.length === 0) {
-    return null;
-  }
-  return usersResult[0];
-}
+export const getUserByUsername = cache(
+  async ({ username }: { username: string }) => {
+    const usersResult = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, username));
+    if (!usersResult || usersResult.length === 0) {
+      return null;
+    }
+    return usersResult[0];
+  },
+);

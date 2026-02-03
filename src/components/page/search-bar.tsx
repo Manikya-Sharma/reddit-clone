@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 import { Routes } from "@/client/routes";
 
-export default function SearchBar() {
+const SearchBar = React.memo(() => {
   return (
     <div className="flex-2 h-10 min-w-fit rounded-full flex p-1 relative bg-inherit before:absolute before:-inset-[0.1rem] before:bg-linear-to-r before:from-red-600 before:to-yellow-600 before:-z-10 before:rounded-full hover:bg-neutral-800 transition-colors">
       <label className="flex shrink-0 items-center" htmlFor="search-bar-input">
@@ -26,4 +27,6 @@ export default function SearchBar() {
       </Link>
     </div>
   );
-}
+});
+
+export default SearchBar;

@@ -3,21 +3,20 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { format, parse } from "date-fns";
 import Image from "next/image";
+import React, { useCallback, useMemo } from "react";
+import { toast } from "sonner";
 import { useGetSub } from "@/app/hooks/useGetSub";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import { useJoinSub } from "@/app/hooks/useJoinSub";
 import { useLeaveSub } from "@/app/hooks/useLeaveSub";
-import Indeterminate from "./indeterminate";
 import { Routes } from "@/client/routes";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import Indeterminate from "./indeterminate";
 
-export default function SubSide({ subTitle }: { subTitle: string | null }) {
-  const { data: subResult, isLoading: isLoadingSub } = useGetSub({
+const SubSide = React.memo(({ subTitle }: { subTitle: string | null }) => {
+  const { data: sub, isLoading: isLoadingSub } = useGetSub({
     title: subTitle,
   });
-  const sub = subResult;
 
   const queryClient = useQueryClient();
 
@@ -36,14 +35,18 @@ export default function SubSide({ subTitle }: { subTitle: string | null }) {
 
   const { data: user, isLoading: isLoadingUser } = useGetUser();
   const subsResult = useGetSubs(user?.subs);
-  const userSubs = subsResult.map((sub) => sub.data);
-  const isJoinedSub = userSubs
-    .map((sub) => sub?.sub.title)
-    .includes(sub?.title);
+  const userSubs = useMemo(
+    () => subsResult.map((sub) => sub.data),
+    [subsResult],
+  );
+  const isJoinedSub = useMemo(
+    () => userSubs.map((sub) => sub?.sub.title).includes(sub?.title),
+    [userSubs, sub?.title],
+  );
 
   const userId = user?.id;
 
-  const handleSubJoin = () => {
+  const handleSubJoin = useCallback(() => {
     if (isModifyingSub || !userId) {
       toast.error("You need to be logged in to join a sub");
     }
@@ -52,7 +55,7 @@ export default function SubSide({ subTitle }: { subTitle: string | null }) {
     } else {
       joinSub({ userId, subId: sub?.id });
     }
-  };
+  }, [isModifyingSub, userId, leaveSub, joinSub, sub?.id, isJoinedSub]);
 
   return (
     <div className="fixed top-16 right-2 bg-black p-4 rounded-md flex flex-col gap-3 w-68">
@@ -103,4 +106,6 @@ export default function SubSide({ subTitle }: { subTitle: string | null }) {
       </div>
     </div>
   );
-}
+});
+
+export default SubSide;

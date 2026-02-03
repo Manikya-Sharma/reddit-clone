@@ -2,20 +2,26 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useGetSubs } from "@/app/hooks/useGetSubs";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import { useLeaveSub } from "@/app/hooks/useLeaveSub";
+import { Routes } from "@/client/routes";
 import type { subs } from "@/database/drizzle/schema";
 import { Skeleton } from "../ui/skeleton";
 import WithTooltip from "./with-tooltip";
-import { Routes } from "@/client/routes";
 
-export default function CommunityList() {
+export const CommunityList = React.memo(() => {
   const { data: user, isLoading: isLoadingUser } = useGetUser();
   const subsResult = useGetSubs(user?.subs);
-  const userSubs = subsResult.map((sub) => sub.data);
-  const isLoadingSubs = subsResult.some((sub) => sub.isLoading);
+  const userSubs = useMemo(
+    () => subsResult.map((sub) => sub.data),
+    [subsResult],
+  );
+  const isLoadingSubs = useMemo(
+    () => subsResult.some((sub) => sub.isLoading),
+    [subsResult],
+  );
   const queryClient = useQueryClient();
   const { mutate: leaveSub, isPending } = useLeaveSub({
     onSuccess: () => {
@@ -55,58 +61,62 @@ export default function CommunityList() {
             ))}
     </ul>
   );
-}
+});
 
-function Row({
-  sub,
-  leaveSub,
-  isPending,
-}: {
-  sub: typeof subs.$inferSelect;
-  leaveSub: (inp: { subId: number | null | undefined }) => void;
-  isPending: boolean;
-}) {
-  return (
-    <li key={sub.id} className="flex">
-      <a
-        href={Routes.SUBREDDIT({ subTitle: sub.title ?? "" })}
-        className="flex gap-2 group"
-      >
-        <Image src="/icons/outline-logo.svg" width={20} height={20} alt="" />
-        <div className="flex flex-col gap-0.5">
-          <span className="text-sm group-hover:text-blue-400">{sub.title}</span>
-          <span className="text-xs text-neutral-400">
-            {sub.description?.slice(0, 30)}
-          </span>
+const Row = React.memo(
+  ({
+    sub,
+    leaveSub,
+    isPending,
+  }: {
+    sub: typeof subs.$inferSelect;
+    leaveSub: (inp: { subId: number | null | undefined }) => void;
+    isPending: boolean;
+  }) => {
+    return (
+      <li key={sub.id} className="flex">
+        <a
+          href={Routes.SUBREDDIT({ subTitle: sub.title ?? "" })}
+          className="flex gap-2 group"
+        >
+          <Image src="/icons/outline-logo.svg" width={20} height={20} alt="" />
+          <div className="flex flex-col gap-0.5">
+            <span className="text-sm group-hover:text-blue-400">
+              {sub.title}
+            </span>
+            <span className="text-xs text-neutral-400">
+              {sub.description?.slice(0, 30)}
+            </span>
+          </div>
+        </a>
+        <div className="flex gap-2 items-center ml-auto">
+          <WithTooltip tooltipText={`Favourite r/${sub.title}`}>
+            <Image
+              src={"/icons/star-icon.svg"}
+              width={16}
+              height={16}
+              alt="star"
+            />
+          </WithTooltip>
+          <WithTooltip tooltipText={`Leave r/${sub.title}`}>
+            <button
+              type="button"
+              className="rounded-full border-neutral-400 border hover:border-white cursor-pointer px-4 py-2 text-xs"
+              disabled={isPending}
+              onClick={() => {
+                leaveSub({ subId: sub.id });
+              }}
+            >
+              Joined
+            </button>
+          </WithTooltip>
         </div>
-      </a>
-      <div className="flex gap-2 items-center ml-auto">
-        <WithTooltip tooltipText={`Favourite r/${sub.title}`}>
-          <Image
-            src={"/icons/star-icon.svg"}
-            width={16}
-            height={16}
-            alt="star"
-          />
-        </WithTooltip>
-        <WithTooltip tooltipText={`Leave r/${sub.title}`}>
-          <button
-            type="button"
-            className="rounded-full border-neutral-400 border hover:border-white cursor-pointer px-4 py-2 text-xs"
-            disabled={isPending}
-            onClick={() => {
-              leaveSub({ subId: sub.id });
-            }}
-          >
-            Joined
-          </button>
-        </WithTooltip>
-      </div>
-    </li>
-  );
-}
+      </li>
+    );
+  },
+);
 
-function LoadingSkeleton() {
+const LoadingSkeleton = React.memo(() => {
   return (
     <li className="flex">
       <a href={Routes.HOMEPAGE} className="flex gap-2 group">
@@ -128,4 +138,4 @@ function LoadingSkeleton() {
       </div>
     </li>
   );
-}
+});

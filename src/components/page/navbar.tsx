@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 import { Routes } from "@/client/routes";
 import NavOptions from "./nav-options";
 import SearchBar from "./search-bar";
 import WithTooltip from "./with-tooltip";
 
-export default function Navbar() {
+const Navbar = React.memo(() => {
   return (
     <nav className="bg-inherit fixed inset-x-0 h-14 border-b border-neutral-700 text-neutral-200 flex items-center px-4 isolate z-10">
       <WithTooltip tooltipText="Go to Reddit Home" side="right">
@@ -25,4 +26,6 @@ export default function Navbar() {
       <NavOptions />
     </nav>
   );
-}
+});
+
+export default Navbar;
