@@ -1,4 +1,4 @@
-import CommunityList from "@/components/page/community-list";
+import { CommunityList } from "@/components/page/community-list";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 

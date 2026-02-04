@@ -47,7 +47,7 @@ export default function Aside({
 
       <aside
         className={cn(
-          "w-74 mt-14 fixed h-[96vh] border-r border-neutral-700 pl-4 pr-6 overflow-y-auto transition-transform pb-6",
+          "no-scroll w-74 mt-14 fixed h-[96vh] border-r border-neutral-700 pl-4 pr-6 overflow-y-auto transition-transform pb-6",
           !expanded && "-translate-x-64",
         )}
       >
