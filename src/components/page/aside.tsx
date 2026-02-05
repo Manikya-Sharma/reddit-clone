@@ -280,6 +280,10 @@ const Section = React.memo(
             <Image
               src="/icons/dropdown-icon.svg"
               alt=""
+              className={cn(
+                "transition-transform",
+                !isCollapsed && "rotate-180",
+              )}
               width={20}
               height={20}
             />
