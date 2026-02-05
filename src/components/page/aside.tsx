@@ -5,8 +5,8 @@ import React, { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Routes } from "@/client/routes";
 import type { subs } from "@/database/drizzle/schema";
-import { useGetSubs } from "@/hooks/useGetSubs";
-import { useGetUser } from "@/hooks/useGetUser";
+import { useGetSubs } from "@/hooks/subs/useGetSubs";
+import { useGetUser } from "@/hooks/user/useGetUser";
 import { cn } from "@/lib/utils";
 
 export default function Aside({

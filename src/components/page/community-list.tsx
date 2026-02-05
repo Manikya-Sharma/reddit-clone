@@ -5,9 +5,9 @@ import Image from "next/image";
 import React, { useCallback, useMemo } from "react";
 import { Routes } from "@/client/routes";
 import type { subs } from "@/database/drizzle/schema";
-import { useGetSubs } from "@/hooks/useGetSubs";
-import { useGetUser } from "@/hooks/useGetUser";
-import { useLeaveSub } from "@/hooks/useLeaveSub";
+import { useGetSubs } from "@/hooks/subs/useGetSubs";
+import { useLeaveSub } from "@/hooks/subs/useLeaveSub";
+import { useGetUser } from "@/hooks/user/useGetUser";
 import { Skeleton } from "../ui/skeleton";
 import WithTooltip from "./with-tooltip";
 

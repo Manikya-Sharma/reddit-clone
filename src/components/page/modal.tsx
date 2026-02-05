@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useRef } from "react";
-import { useOutsideCapture } from "@/hooks/useOutsideCapture";
+import { useOutsideCapture } from "@/hooks/general/useOutsideCapture";
 
 // TODO: Can try using native modal element
 const Modal = React.memo(

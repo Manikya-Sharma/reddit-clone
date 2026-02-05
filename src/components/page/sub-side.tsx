@@ -6,11 +6,11 @@ import Image from "next/image";
 import React, { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { Routes } from "@/client/routes";
-import { useGetSub } from "@/hooks/useGetSub";
-import { useGetSubs } from "@/hooks/useGetSubs";
-import { useGetUser } from "@/hooks/useGetUser";
-import { useJoinSub } from "@/hooks/useJoinSub";
-import { useLeaveSub } from "@/hooks/useLeaveSub";
+import { useGetSub } from "@/hooks/subs/useGetSub";
+import { useGetSubs } from "@/hooks/subs/useGetSubs";
+import { useJoinSub } from "@/hooks/subs/useJoinSub";
+import { useLeaveSub } from "@/hooks/subs/useLeaveSub";
+import { useGetUser } from "@/hooks/user/useGetUser";
 
 const SubSide = React.memo(({ subTitle }: { subTitle: string | null }) => {
   const { data: sub, isLoading: isLoadingSub } = useGetSub({
@@ -72,7 +72,12 @@ const SubSide = React.memo(({ subTitle }: { subTitle: string | null }) => {
             }
           }}
         >
-          <Image src="/icons/plus-icon.svg" width={16} height={16} alt="New post" />
+          <Image
+            src="/icons/plus-icon.svg"
+            width={16}
+            height={16}
+            alt="New post"
+          />
           Create Post
         </a>
         <button
@@ -86,7 +91,12 @@ const SubSide = React.memo(({ subTitle }: { subTitle: string | null }) => {
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex gap-3">
-          <Image src="/icons/cake-icon.svg" width={14} height={14} alt="Birthday" />
+          <Image
+            src="/icons/cake-icon.svg"
+            width={14}
+            height={14}
+            alt="Birthday"
+          />
           <span className="text-xs text-neutral-300">
             Created{" "}
             {format(
@@ -96,7 +106,12 @@ const SubSide = React.memo(({ subTitle }: { subTitle: string | null }) => {
           </span>
         </div>
         <div className="flex gap-3">
-          <Image src="/icons/globe-icon.svg" width={14} height={14} alt="Visibility" />
+          <Image
+            src="/icons/globe-icon.svg"
+            width={14}
+            height={14}
+            alt="Visibility"
+          />
           <span className="text-xs text-neutral-300">
             {sub?.status === "private" ? "Private" : "Public"}
           </span>

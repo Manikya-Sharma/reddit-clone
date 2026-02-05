@@ -5,9 +5,9 @@ import Image from "next/image";
 import React, { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { Routes } from "@/client/routes";
-import { useGetPostById } from "@/hooks/useGetPostById";
-import { useGetSubById } from "@/hooks/useGetSub";
-import { useGetUser } from "@/hooks/useGetUser";
+import { useGetPostById } from "@/hooks/posts/useGetPostById";
+import { useGetSubById } from "@/hooks/subs/useGetSub";
+import { useGetUser } from "@/hooks/user/useGetUser";
 import { cn } from "@/lib/utils";
 import { client } from "@/server/client";
 import {

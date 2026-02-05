@@ -3,8 +3,8 @@
 import Image from "next/image";
 import React from "react";
 import { Routes } from "@/client/routes";
-import { useGetLogout } from "@/hooks/useGetLogout";
-import { useGetUser } from "@/hooks/useGetUser";
+import { useGetLogout } from "@/hooks/user/useGetLogout";
+import { useGetUser } from "@/hooks/user/useGetUser";
 import { cn } from "@/lib/utils";
 import LoginCard from "./login-card";
 import ProfilePic from "./profile-pic";

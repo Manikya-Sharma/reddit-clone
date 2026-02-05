@@ -5,9 +5,9 @@ import React from "react";
 import Comments from "@/components/page/comments";
 import VotesSection from "@/components/page/votes-section";
 import type { posts, subs } from "@/database/drizzle/schema";
-import { useGetPostById } from "@/hooks/useGetPostById";
-import { useGetSub } from "@/hooks/useGetSub";
-import { useGetUser } from "@/hooks/useGetUser";
+import { useGetPostById } from "@/hooks/posts/useGetPostById";
+import { useGetSub } from "@/hooks/subs/useGetSub";
+import { useGetUser } from "@/hooks/user/useGetUser";
 import BackButton from "./back-button";
 
 export const PostWithComments = React.memo(

@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { getDefaultForm } from "@/components/form/default-form";
-import { useGetUser } from "@/hooks/useGetUser";
+import { useGetUser } from "@/hooks/user/useGetUser";
 import schema from "@/schemas/new-com-schema.json";
 import uiSchema from "@/schemas/new-com-ui-schema.json";
 import { client } from "@/server/client";

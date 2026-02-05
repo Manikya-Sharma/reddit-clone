@@ -4,8 +4,8 @@ import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Routes } from "@/client/routes";
-import { useGetCommentById } from "@/hooks/useGetCommentById";
-import { useGetUserDetailsById } from "@/hooks/useGetUserDetailsById";
+import { useGetCommentById } from "@/hooks/posts/useGetCommentById";
+import { useGetUserDetailsById } from "@/hooks/user/useGetUserDetailsById";
 import { cn } from "@/lib/utils";
 import ProfilePic from "./profile-pic";
 import VotesSectionComment from "./votes-section-comment";
@@ -69,7 +69,12 @@ const Comment = React.memo(
             type="button"
             onClick={() => setCollapsed(false)}
           >
-            <Image src="/icons/plus-round.svg" width={20} height={20} alt="Expand" />
+            <Image
+              src="/icons/plus-round.svg"
+              width={20}
+              height={20}
+              alt="Expand"
+            />
             <span className="text-sm">{author?.username}</span>
           </button>
         ) : (

@@ -4,8 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useCallback, useMemo } from "react";
 import { toast } from "sonner";
-import { useGetCommentById } from "@/hooks/useGetCommentById";
-import { useGetUser } from "@/hooks/useGetUser";
+import { useGetCommentById } from "@/hooks/posts/useGetCommentById";
+import { useGetUser } from "@/hooks/user/useGetUser";
 import { cn } from "@/lib/utils";
 import { client } from "@/server/client";
 import {

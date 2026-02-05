@@ -7,7 +7,7 @@ import Image from "next/image";
 import React, { useMemo } from "react";
 import { Routes } from "@/client/routes";
 import type { posts } from "@/database/drizzle/schema";
-import { useGetSubById } from "@/hooks/useGetSub";
+import { useGetSubById } from "@/hooks/subs/useGetSub";
 import { client } from "@/server/client";
 import VotesSection from "./votes-section";
 

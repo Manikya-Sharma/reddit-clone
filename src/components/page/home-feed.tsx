@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo } from "react";
 import type { posts } from "@/database/drizzle/schema";
-import { useGetAllSubs } from "@/hooks/useGetAllSubs";
+import { useGetAllSubs } from "@/hooks/subs/useGetAllSubs";
 import { ShowFeed } from "./show-feed";
 
 const HomeFeed = React.memo(
